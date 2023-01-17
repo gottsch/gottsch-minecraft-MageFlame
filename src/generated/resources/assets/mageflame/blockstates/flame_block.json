@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mageflame:block/flame_block"
+    }
+  }
+}
