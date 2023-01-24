@@ -84,6 +84,7 @@ public class WingedTorchModel<T extends Entity> extends EntityModel<T> {
 		this.leftWing.yRot = -this.rightWing.yRot;
 		this.leftWing.xRot = 0.47123894F;
 		this.rightWing.xRot = 0.47123894F;
+		this.main.zRot = 0.0872665F;
 
 		bob(main, bodyY, ageInTicks);
 	}
