@@ -167,45 +167,43 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 				}
 			}
 
-			// TODO could move all light update code to method
-			/*
-			 * update light positions
-			 */
-			// initial setup
-			if (getCurrentLightCoords() == null) {
-				if (!updateLightCoords()) {
-					die();
-					return;
+			updateLightBlocks();
+		}
+	}
+
+	@Override
+	public void updateLightBlocks() {
+		// initial setup
+		if (getCurrentLightCoords() == null) {
+			if (!updateLightCoords()) {
+				die();
+				return;
+			}
+			// set last = current as they are in the same place
+			setLastLightCoords(getCurrentLightCoords());
+			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
+		} else {
+			if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
+				// test location if fluids
+				BlockState currentState = level.getBlockState(blockPosition());
+				if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
+					level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
 				}
-//				setCurrentLightCoords(new Coords(blockPosition()));
-				// set last = current as they are in the same place
-				setLastLightCoords(getCurrentLightCoords());
-				level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
-			} else {
-				if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
-					// test location if fluids
-					BlockState currentState = level.getBlockState(blockPosition());
-					if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
-						level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
+				else {
+					if (!updateLightCoords()) {
+						die();
+						return;
 					}
-					else {
-						if (!updateLightCoords()) {
-							die();
-							return;
-						}
 
-						// update block with flame
-						level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
+					// update block with flame
+					level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
 
-						// delete old
-						level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
-					}
+					// delete old
+					level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
 				}
 			}
 		}
 	}
-
-
 
 	/**
 	 * 
@@ -274,10 +272,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		setInvisible(true);
 
 		// remove light blocks
-		if (level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
+		if (getCurrentLightCoords() != null && level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
 			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
 		}
-		if (level.getBlockState(getLastLightCoords().toPos()).getBlock() == getFlameBlock()) {
+		if (getLastLightCoords() != null && level.getBlockState(getLastLightCoords().toPos()).getBlock() == getFlameBlock()) {
 			level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
 		}			
 		remove(RemovalReason.KILLED);

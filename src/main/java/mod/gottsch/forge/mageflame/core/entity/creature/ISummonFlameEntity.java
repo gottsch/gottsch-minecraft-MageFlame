@@ -54,9 +54,8 @@ public interface ISummonFlameEntity {
 		return false;
 	}
 
-	default public boolean updateLightCoords() {
-		return true;
-	}
+	public boolean updateLightCoords();
+	public void updateLightBlocks();
 
 	public @NotNull Block getFlameBlock();
 	

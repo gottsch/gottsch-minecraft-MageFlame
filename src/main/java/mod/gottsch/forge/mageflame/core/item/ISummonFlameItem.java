@@ -17,6 +17,7 @@
  */
 package mod.gottsch.forge.mageflame.core.item;
 
+import java.util.Optional;
 import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
@@ -77,7 +78,7 @@ public interface ISummonFlameItem {
 	 * @param target
 	 * @return
 	 */
-	default public boolean spawn(ServerLevel level, Random random, LivingEntity owner, EntityType<? extends Mob> entityType, Vec3 coords) {
+	default public Optional<Mob> spawn(ServerLevel level, Random random, LivingEntity owner, EntityType<? extends Mob> entityType, Vec3 coords) {
 		Direction direction = owner.getDirection();
 
 		if (!WorldInfo.isClientSide(level)) {
@@ -112,10 +113,10 @@ public interface ISummonFlameItem {
 					double zSpeed = random.nextGaussian() * 0.02D;
 					level.sendParticles(ParticleTypes.POOF, owner.getX(), owner.getY() + 0.5, owner.getZ(), 1, xSpeed, ySpeed, zSpeed, (double)0.15F);
 				}
-				return true;
+				return Optional.of(mob);
 			}
 		}
-		return false;
+		return Optional.empty();
 	}
 	
 	/**

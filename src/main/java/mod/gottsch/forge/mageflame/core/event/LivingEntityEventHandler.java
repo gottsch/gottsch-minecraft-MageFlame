@@ -33,6 +33,8 @@ public class LivingEntityEventHandler {
 		}
 		if (event.getEntity() instanceof ISummonFlameEntity) {
 			ISummonFlameEntity entity = (ISummonFlameEntity)event.getEntity();
+			
+			// register the entity
 			if (entity.getOwnerUUID() != null) {
 				if(!SummonFlameRegistry.isRegistered(entity.getOwnerUUID())) {
 					SummonFlameRegistry.register(entity.getOwnerUUID(), event.getEntity().getUUID());
@@ -41,6 +43,9 @@ public class LivingEntityEventHandler {
 			else {
 				entity.die();
 			}
+			
+			// update position and light blocks
+			entity.updateLightBlocks();
 		}
 	}
 }

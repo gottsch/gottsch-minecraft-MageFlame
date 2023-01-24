@@ -18,10 +18,12 @@
 package mod.gottsch.forge.mageflame.core.item;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import mod.gottsch.forge.mageflame.core.config.Config;
+import mod.gottsch.forge.mageflame.core.entity.creature.ISummonFlameEntity;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
 import mod.gottsch.forge.mageflame.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -104,7 +106,9 @@ public abstract class SummonFlameBaseItem extends Item implements ISummonFlameIt
 		Vec3 spawnPos = getByPlayerPos(player);
 
 		// spawn entity
-		if (spawn((ServerLevel)level, new Random(), player, getSummonFlameEntity(), spawnPos)) {
+		Optional<Mob> mob = spawn((ServerLevel)level, new Random(), player, getSummonFlameEntity(), spawnPos);
+		if (mob.isPresent()) {
+			// reduce scroll stack size ie consume
 			heldStack.shrink(1);
 			return InteractionResultHolder.consume(heldStack);
 		}
