@@ -52,8 +52,8 @@ public class MageFlameScroll extends SummonFlameBaseItem {
 		
 		tooltip.add(new TranslatableComponent(LangUtil.tooltip("mage_flame.desc")).withStyle(ChatFormatting.YELLOW));
 		tooltip.add(new TextComponent(" "));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("light_level"), Registration.GREATER_REVELATION_BLOCK.get().getLightEmission(Registration.MAGE_FLAME_BLOCK.get().defaultBlockState(), level, null)));					
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("lifespan"), ticksToTime(Config.SERVER.greaterRevelationLifespan.get())));
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("light_level"), Registration.MAGE_FLAME_BLOCK.get().getLightEmission(Registration.MAGE_FLAME_BLOCK.get().defaultBlockState(), level, null)));					
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("lifespan"), ticksToTime(Config.SERVER.mageFlameLifespan.get())));
 	}
 
 	@Override
