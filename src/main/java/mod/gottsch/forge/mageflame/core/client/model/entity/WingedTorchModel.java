@@ -65,7 +65,9 @@ public class WingedTorchModel<T extends Entity> extends EntityModel<T> {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+//		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition main = partdefinition.addOrReplaceChild("main", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 24.0F, 0.0F, 0.0873F, 0.0F, 0.0F));
+
 		PartDefinition torch = main.addOrReplaceChild("torch", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -10.0F, -1.0F, 2.0F, 10.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition wings = main.addOrReplaceChild("wings", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition rightWing = wings.addOrReplaceChild("rightWing", CubeListBuilder.create().texOffs(9, 0).mirror().addBox(-5.0F, -0.5F, 0.0F, 5.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -6.5F, 1.0F, 0.0F, 0.1745F, 0.0873F));
@@ -84,7 +86,6 @@ public class WingedTorchModel<T extends Entity> extends EntityModel<T> {
 		this.leftWing.yRot = -this.rightWing.yRot;
 		this.leftWing.xRot = 0.47123894F;
 		this.rightWing.xRot = 0.47123894F;
-		this.main.zRot = 0.0872665F;
 
 		bob(main, bodyY, ageInTicks);
 	}
