@@ -17,8 +17,8 @@
  */
 package mod.gottsch.forge.mageflame.datagen;
 
-import mod.gottsch.forge.mageflame.MageFlame;
-import mod.gottsch.forge.mageflame.setup.Registration;
+import mod.gottsch.forge.mageflame.core.MageFlame;
+import mod.gottsch.forge.mageflame.core.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -36,7 +36,9 @@ public class BlockStates extends BlockStateProvider {
 	
 	@Override
 	protected void registerStatesAndModels() {
-		simpleBlock(Registration.FLAME_BLOCK.get());
+		simpleBlock(Registration.MAGE_FLAME_BLOCK.get());
+		simpleBlock(Registration.LESSER_REVELATION_BLOCK.get());
+		simpleBlock(Registration.GREATER_REVELATION_BLOCK.get());
 	}
 
 }
