@@ -20,7 +20,7 @@ package mod.gottsch.forge.mageflame.datagen;
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
 import mod.gottsch.forge.mageflame.core.util.LangUtil;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 /**
@@ -30,7 +30,7 @@ import net.minecraftforge.common.data.LanguageProvider;
  */
 public class LanguageGen extends LanguageProvider {
 
-    public LanguageGen(DataGenerator gen, String locale) {
+    public LanguageGen(PackOutput gen, String locale) {
         super(gen, MageFlame.MOD_ID, locale);
     }
     

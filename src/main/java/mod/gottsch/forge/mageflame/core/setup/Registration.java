@@ -61,10 +61,10 @@ public class Registration {
 					}).noLootTable().air()));
 
 	// items
-	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> LESSER_REVELATION_SCROLL = Registration.ITEMS.register("lesser_revelation_scroll", () -> new LesserRevelationScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> GREATER_REVELATION_SCROLL = Registration.ITEMS.register("greater_revelation_scroll", () -> new GreaterRevelationScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> WINGED_TORCH_SCROLL = Registration.ITEMS.register("winged_torch_scroll", () -> new WingedTorchScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties()));
+	public static final RegistryObject<Item> LESSER_REVELATION_SCROLL = Registration.ITEMS.register("lesser_revelation_scroll", () -> new LesserRevelationScroll(new Item.Properties()));
+	public static final RegistryObject<Item> GREATER_REVELATION_SCROLL = Registration.ITEMS.register("greater_revelation_scroll", () -> new GreaterRevelationScroll(new Item.Properties()));
+	public static final RegistryObject<Item> WINGED_TORCH_SCROLL = Registration.ITEMS.register("winged_torch_scroll", () -> new WingedTorchScroll(new Item.Properties()));
 
 	// entities
 	public static final RegistryObject<EntityType<MageFlameEntity>> MAGE_FLAME_ENTITY  = Registration.ENTITIES.register(MAGE_FLAME, () -> EntityType.Builder.of(MageFlameEntity::new, MobCategory.CREATURE)
@@ -93,7 +93,7 @@ public class Registration {
 			.clientTrackingRange(8)
 			.setTrackingRange(20)
 			.setShouldReceiveVelocityUpdates(false)
-			.build(GREATER_REVELATION));
+			.build(WINGED_TORCH));
 
 	// particles
 	public static final RegistryObject<SimpleParticleType> REVELATION_PARTICLE = Registration.PARTICLES.register("revelation_particle", () -> new SimpleParticleType(true));

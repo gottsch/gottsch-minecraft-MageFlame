@@ -21,8 +21,9 @@ import java.util.function.Consumer;
 
 import mod.gottsch.forge.mageflame.core.setup.Registration;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
@@ -35,20 +36,20 @@ import net.minecraft.world.item.Items;
  */
 public class Recipes extends RecipeProvider {
 
-		public Recipes(DataGenerator generator) {
+		public Recipes(PackOutput generator) {
 			super(generator);
 		}
 
 		@Override
-		protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipe) {
-			ShapelessRecipeBuilder.shapeless(Registration.MAGE_FLAME_SCROLL.get())
+		protected void buildRecipes(Consumer<FinishedRecipe> recipe) {
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.MAGE_FLAME_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.PAPER)
 			.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
 					Items.TORCH))
 			.save(recipe);
 			
-			ShapelessRecipeBuilder.shapeless(Registration.LESSER_REVELATION_SCROLL.get())
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.LESSER_REVELATION_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.FLINT_AND_STEEL)
 			.requires(Items.PAPER)
@@ -56,7 +57,7 @@ public class Recipes extends RecipeProvider {
 					Items.TORCH))
 			.save(recipe);
 			
-			ShapelessRecipeBuilder.shapeless(Registration.GREATER_REVELATION_SCROLL.get())
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.GREATER_REVELATION_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.FLINT_AND_STEEL)
 			.requires(Items.GLOWSTONE_DUST)
@@ -65,7 +66,7 @@ public class Recipes extends RecipeProvider {
 					Items.TORCH))
 	        .save(recipe);
 			
-	        ShapedRecipeBuilder.shaped(Registration.WINGED_TORCH_SCROLL.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.WINGED_TORCH_SCROLL.get())
 	        .pattern(" e ")
 	        .pattern("ftf")
 	        .pattern("spb")

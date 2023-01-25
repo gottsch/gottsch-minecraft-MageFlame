@@ -25,7 +25,10 @@ import mod.gottsch.forge.mageflame.core.entity.creature.LesserRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.WingedTorchEntity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.CreativeModeTab.TabVisibility;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -88,5 +91,16 @@ public class CommonSetup {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 WingedTorchEntity::checkSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
+	}
+	
+	@SubscribeEvent
+	public static void registemItemsToTab(BuildContents event) {
+		if (event.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+			event.accept(Registration.MAGE_FLAME_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.accept(Registration.LESSER_REVELATION_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.accept(Registration.GREATER_REVELATION_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.accept(Registration.WINGED_TORCH_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+
+		}
 	}
 }

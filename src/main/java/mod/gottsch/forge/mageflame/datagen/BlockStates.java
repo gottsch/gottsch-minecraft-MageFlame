@@ -19,7 +19,7 @@ package mod.gottsch.forge.mageflame.datagen;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -30,7 +30,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  */
 public class BlockStates extends BlockStateProvider {
 
-	public BlockStates(DataGenerator gen, ExistingFileHelper helper) {
+	public BlockStates(PackOutput gen, ExistingFileHelper helper) {
         super(gen, MageFlame.MOD_ID, helper);
     }
 	

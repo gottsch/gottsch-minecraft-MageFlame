@@ -19,6 +19,7 @@ package mod.gottsch.forge.mageflame.datagen;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,17 +35,18 @@ public class DataGenerators {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
+		PackOutput output = generator.getPackOutput();
 		if (event.includeServer()) {
-			generator.addProvider(false, new Recipes(generator));
+			generator.addProvider(event.includeServer(), new Recipes(output));
 			//            generator.addProvider(new TutLootTables(generator));
 			//            TutBlockTags blockTags = new TutBlockTags(generator, event.getExistingFileHelper());
 			//            generator.addProvider(blockTags);
 			//            generator.addProvider(new DDItemTags(generator, blockTags, event.getExistingFileHelper()));
 		}
 		if (event.includeClient()) {
-			generator.addProvider(false, new BlockStates(generator, event.getExistingFileHelper()));
-			generator.addProvider(false, new ItemModelsProvider(generator, event.getExistingFileHelper()));
-			generator.addProvider(false, new LanguageGen(generator, "en_us"));
+			generator.addProvider(event.includeClient(), new BlockStates(output, event.getExistingFileHelper()));
+			generator.addProvider(event.includeClient(), new ItemModelsProvider(output, event.getExistingFileHelper()));
+			generator.addProvider(event.includeClient(), new LanguageGen(output, "en_us"));
 		}
 	}
 }

@@ -18,7 +18,7 @@
 package mod.gottsch.forge.mageflame.datagen;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -29,7 +29,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  */
 public class ItemModelsProvider extends ItemModelProvider {
 
-	public ItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
+	public ItemModelsProvider(PackOutput generator, ExistingFileHelper existingFileHelper) {
 		super(generator, MageFlame.MOD_ID, existingFileHelper);
 	}
 
