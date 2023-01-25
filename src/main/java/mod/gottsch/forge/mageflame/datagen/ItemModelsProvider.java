@@ -18,7 +18,6 @@
 package mod.gottsch.forge.mageflame.datagen;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.setup.Registration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -37,13 +36,17 @@ public class ItemModelsProvider extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 		// tabs
-		singleTexture(Registration.MAGE_FLAME_SCROLL.get().getRegistryName().getPath(),
+		singleTexture(
+				"mage_flame_scroll",
 				mcLoc("item/generated"), "layer0", modLoc("item/mage_flame_scroll"));
-		singleTexture(Registration.LESSER_REVELATION_SCROLL.get().getRegistryName().getPath(),
+		singleTexture(
+				"less_revelation_scroll",
 				mcLoc("item/generated"), "layer0", modLoc("item/lesser_revelation_scroll"));
-		singleTexture(Registration.GREATER_REVELATION_SCROLL.get().getRegistryName().getPath(),
+		singleTexture(
+				"greater_revelation_scroll",
 				mcLoc("item/generated"), "layer0", modLoc("item/greater_revelation_scroll"));
-		singleTexture(Registration.WINGED_TORCH_SCROLL.get().getRegistryName().getPath(),
+		singleTexture(
+				"winged_torch_scroll",
 				mcLoc("item/generated"), "layer0", modLoc("item/winged_torch_scroll"));
 
 	}

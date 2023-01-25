@@ -64,7 +64,7 @@ public class Config extends AbstractConfig {
 			mageFlameLifespan = builder
 					.comment(" The lifespan of a Mage Flame spell/entity in ticks.", 
 							"Ex. 20 ticks * 60 seconds * 5 = 6000 = 5 minutes.")
-					.defineInRange("mageFlameLifespan", 6000, 1200, 72000);
+					.defineInRange("mageFlameLifespan", 12000, 1200, 72000);
 
 			lesserRevelationLifespan = builder
 					.comment(" The lifespan of a Lesser Revelation spell/entity in ticks.")

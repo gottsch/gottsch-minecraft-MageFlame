@@ -34,6 +34,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
@@ -108,7 +109,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	 * @param random
 	 * @return
 	 */
-	public static boolean checkSpawnRules(EntityType<? extends FlyingMob> mob, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, Random random) {
+	public static boolean checkSpawnRules(EntityType<? extends FlyingMob> mob, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
 		return false;
 	}
 

@@ -3,10 +3,8 @@ package mod.gottsch.forge.mageflame.core.event;
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.entity.creature.ISummonFlameEntity;
 import mod.gottsch.forge.mageflame.core.registry.SummonFlameRegistry;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -19,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @Mod.EventBusSubscriber(modid = MageFlame.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
 public class LivingEntityEventHandler {
 //	@SubscribeEvent
-	public static void onEntityUpdate(LivingUpdateEvent event) {
+	public static void onEntityUpdate(LivingTickEvent event) {
 		if (event.getEntity().level.isClientSide) {
 			return;
 		}	
@@ -27,7 +25,7 @@ public class LivingEntityEventHandler {
 	
 	// TODO RESEARCH this could be better implemented in Entity.Load()
 	@SubscribeEvent
-	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+	public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
 		if (event.getEntity().level.isClientSide) {
 			return;
 		}

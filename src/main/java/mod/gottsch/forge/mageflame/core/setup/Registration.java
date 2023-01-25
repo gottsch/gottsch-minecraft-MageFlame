@@ -2,7 +2,6 @@ package mod.gottsch.forge.mageflame.core.setup;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.block.SummonFlameBlock;
-import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.mageflame.core.entity.creature.GreaterRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.LesserRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
@@ -41,7 +40,7 @@ public class Registration {
 	 */
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MageFlame.MOD_ID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MageFlame.MOD_ID);
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MageFlame.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MageFlame.MOD_ID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MageFlame.MOD_ID);
 
 	// Blocks
@@ -49,17 +48,17 @@ public class Registration {
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 11;
-					}).noDrops().air()));
+					}).noLootTable().air()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 13;
-					}).noDrops().air()));
+					}).noLootTable().air()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 15;
-					}).noDrops().air()));
+					}).noLootTable().air()));
 
 	// items
 	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
