@@ -1,1 +1,1 @@
-h1. Mage Flame
+# Mage Flame
