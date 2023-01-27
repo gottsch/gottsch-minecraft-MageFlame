@@ -17,7 +17,7 @@
  */
 package mod.gottsch.forge.mageflame.core.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.MatrixStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.WingedTorchModel;
@@ -46,7 +46,7 @@ public class WingedTorchRenderer<T extends WingedTorchEntity> extends MobRendere
 	}
 
 	@Override
-	protected void scale(WingedTorchEntity  mageFlame, PoseStack pose, float scale) {
+	protected void scale(WingedTorchEntity  mageFlame, MatrixStack pose, float scale) {
 		pose.scale(this.scale, this.scale, this.scale);
 	}
 

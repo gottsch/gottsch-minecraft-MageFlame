@@ -17,7 +17,7 @@
  */
 package mod.gottsch.forge.mageflame.core.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.MatrixStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
@@ -47,7 +47,7 @@ public class LesserRevelationRenderer<T extends LesserRevelationEntity> extends 
 	}
 
 	@Override
-	protected void scale(LesserRevelationEntity  mageFlame, PoseStack pose, float scale) {
+	protected void scale(LesserRevelationEntity  mageFlame, MatrixStack pose, float scale) {
 		pose.scale(this.scale, this.scale, this.scale);
 	}
 

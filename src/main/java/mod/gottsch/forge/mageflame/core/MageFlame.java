@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.mageflame.core.setup.CommonSetup;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
-import net.minecraft.core.BlockPos;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;

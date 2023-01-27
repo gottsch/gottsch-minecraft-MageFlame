@@ -17,16 +17,19 @@
  */
 package mod.gottsch.forge.mageflame.core.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
 import mod.gottsch.forge.mageflame.core.client.model.entity.LargeFlameBallModel;
-import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
+import mod.gottsch.forge.mageflame.core.entity.creature.GreaterRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.SummonFlameBaseEntity;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
+
 
 /**
  * 
@@ -34,7 +37,7 @@ import net.minecraft.resources.ResourceLocation;
  *
  * @param <T>
  */
-public class GreaterRevelationRenderer<T extends SummonFlameBaseEntity> extends MobRenderer<T, LargeFlameBallModel<T>> {
+public class GreaterRevelationRenderer extends MobRenderer<GreaterRevelationEntity, EntityModel<GreaterRevelationEntity>> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(MageFlame.MOD_ID, "textures/entity/greater_revelation.png");
 	private final float scale;
 	
@@ -42,18 +45,15 @@ public class GreaterRevelationRenderer<T extends SummonFlameBaseEntity> extends 
 	 * 
 	 * @param context
 	 */
-	public GreaterRevelationRenderer(EntityRendererProvider.Context context) {
+	public GreaterRevelationRenderer(EntityRendererManager renderManager, BipedModel<BoundSoulEntity> modelBiped, float shadowSize) {
 		super(context, new LargeFlameBallModel<>(context.bakeLayer(LargeFlameBallModel.LAYER_LOCATION)), 0F);
 		this.scale = 1.0F;
 	}
 
-	@Override
-	protected void scale(SummonFlameBaseEntity  mageFlame, PoseStack pose, float scale) {
-		pose.scale(this.scale, this.scale, this.scale);
-	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SummonFlameBaseEntity entity) {
+	public ResourceLocation getTextureLocation(GreaterRevelationEntity entity) {
 		return TEXTURE;
 	}
+
 }

@@ -1,6 +1,6 @@
 package mod.gottsch.forge.mageflame.core.block;
 
-import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.block.AirBlock;
 
 /**
  * 
