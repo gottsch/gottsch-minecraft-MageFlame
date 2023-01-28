@@ -24,6 +24,10 @@ import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
+import mod.gottsch.forge.mageflame.core.MageFlame;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+
 /**
  * 
  * @author Mark Gottschling Jan 23, 2023
@@ -36,6 +40,38 @@ public class SummonFlameRegistry {
 	 * 
 	 */
 	private SummonFlameRegistry() {}
+	
+	/**
+	 * save/load shouldn't be  necessary as entities self-register when then join a level.
+	 * @return
+	 */
+	public ListTag save() {
+		ListTag listTag = new ListTag();
+		REGISTRY.forEach((playerUuid, entityUuid) -> {
+			CompoundTag tag = new CompoundTag();
+			tag.putString("playerUuid", playerUuid.toString());
+			tag.putString("entityUuid", entityUuid.toString());
+			listTag.add(tag);
+		});
+		return listTag;		
+	}
+	
+	/**
+	 * 
+	 * @param listTag
+	 */
+	public void load(ListTag listTag) {
+		if (listTag != null) {
+			MageFlame.LOGGER.debug("loading summon flame registry...");  	
+			listTag.forEach(element -> {
+				
+				CompoundTag tag = (CompoundTag)element;
+				if (tag.contains("playerUuid") && tag.contains("entityUuid")) {
+					REGISTRY.put(tag.getUUID("playerUuid"), tag.getUUID("entityUuid"));
+				}
+			});
+		}
+	}
 	
 	/**
 	 * 
