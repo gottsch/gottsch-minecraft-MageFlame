@@ -101,8 +101,8 @@ public class SummonFlameRegistry {
 	 * 
 	 * @param uuid
 	 */
-	public static void unregister(UUID uuid) {
-		REGISTRY.remove(uuid);
+	public static UUID unregister(UUID uuid) {
+		return REGISTRY.remove(uuid);
 	}
 	
 	/**

@@ -19,6 +19,7 @@ package mod.gottsch.forge.mageflame.core.item;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.mageflame.core.MageFlame;
@@ -50,7 +51,7 @@ import net.minecraft.world.phys.Vec3;
 public interface ISummonFlameItem {
 
 	EntityType<? extends Mob> getSummonFlameEntity();
-	
+
 	/**
 	 * 
 	 * @param player
@@ -60,14 +61,14 @@ public interface ISummonFlameItem {
 		Vec3 eyePos = player.getEyePosition();
 		Direction direction = player.getDirection();
 		return switch (direction) {
-			case NORTH -> eyePos.add(new Vec3(0.5, 0, 0.35));
-			case SOUTH -> eyePos.add(new Vec3(-0.5, 0, -0.35));
-			case EAST -> eyePos.add(new Vec3(-0.35, 0, 0.5));
-			case WEST -> eyePos.add(new Vec3(0.35, 0, -0.5));
-			default -> eyePos.add(new Vec3(0.5, 0, 0.35));
+		case NORTH -> eyePos.add(new Vec3(0.5, 0, 0.35));
+		case SOUTH -> eyePos.add(new Vec3(-0.5, 0, -0.35));
+		case EAST -> eyePos.add(new Vec3(-0.35, 0, 0.5));
+		case WEST -> eyePos.add(new Vec3(0.35, 0, -0.5));
+		default -> eyePos.add(new Vec3(0.5, 0, 0.35));
 		};
 	}
-	
+
 	/**
 	 * 
 	 * @param level
@@ -84,41 +85,53 @@ public interface ISummonFlameItem {
 		if (!WorldInfo.isClientSide(level)) {
 			// select the first available spawn pos from origin (coords)
 			Vec3 spawnPos = selectSpawnPos(level, coords, direction);
-
+			MageFlame.LOGGER.debug("attempting to spawn summon flame at -> {} ...", spawnPos);
 			SpawnPlacements.Type placement = SpawnPlacements.getPlacementType(entityType);
 			if (NaturalSpawner.isSpawnPositionOk(placement, level, new BlockPos(spawnPos), entityType)) {
-				// check and remove existing owner's mob
-				if (SummonFlameRegistry.isRegistered(owner.getUUID())) {
-					Entity existingMob = level.getEntity(SummonFlameRegistry.get(owner.getUUID()));
-					if (existingMob != null) {
-						((LivingEntity)existingMob).die(DamageSource.GENERIC);
-					}
-					SummonFlameRegistry.unregister(owner.getUUID());
-				}
-				
-				// create mob
+				MageFlame.LOGGER.debug("placement is good");
+
+				// create entity
 				Mob mob = entityType.create(level);
-				mob.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-				((ISummonFlameEntity)mob).setOwner(owner);
-				level.addFreshEntityWithPassengers(mob);
+				if (mob != null) {
+					MageFlame.LOGGER.debug("new entity is created -> {}", mob.getStringUUID());
+					mob.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+					((ISummonFlameEntity)mob).setOwner(owner);
+					
+					MageFlame.LOGGER.debug("is owner registered -> {}", SummonFlameRegistry.isRegistered(owner.getUUID()));
+					// check and remove existing owner's entity, regardless if existing entity is located
+					if (SummonFlameRegistry.isRegistered(owner.getUUID())) {
+						// unregister existing entity for player
+						UUID existingUuid = SummonFlameRegistry.unregister(owner.getUUID());
+						MageFlame.LOGGER.debug("owner is registered to entity -> {}", existingUuid.toString());
+						Entity existingMob = level.getEntity(existingUuid);
+						if (existingMob != null) {
+							MageFlame.LOGGER.debug("located and killing exisiting entity -> {}", existingUuid.toString());
+							((LivingEntity)existingMob).die(DamageSource.GENERIC);
+						}
+					}
 
-				// registry entity
-				MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
-				SummonFlameRegistry.register(owner.getUUID(), mob.getUUID());
+					// registry entity
+					MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
+					SummonFlameRegistry.register(owner.getUUID(), mob.getUUID());
+					
+					// add entity into the level (ie EntityJoinWorldEvent)
+					level.addFreshEntityWithPassengers(mob);
 
-				// cast effects
-				for (int p = 0; p < 20; p++) {
-					double xSpeed = random.nextGaussian() * 0.02D;
-					double ySpeed = random.nextGaussian() * 0.02D;
-					double zSpeed = random.nextGaussian() * 0.02D;
-					level.sendParticles(ParticleTypes.POOF, owner.getX(), owner.getY() + 0.5, owner.getZ(), 1, xSpeed, ySpeed, zSpeed, (double)0.15F);
+					// cast effects
+					for (int p = 0; p < 20; p++) {
+						double xSpeed = random.nextGaussian() * 0.02D;
+						double ySpeed = random.nextGaussian() * 0.02D;
+						double zSpeed = random.nextGaussian() * 0.02D;
+						level.sendParticles(ParticleTypes.POOF, owner.getX(), owner.getY() + 0.5, owner.getZ(), 1, xSpeed, ySpeed, zSpeed, (double)0.15F);
+					}
+					
+					return Optional.of(mob);
 				}
-				return Optional.of(mob);
 			}
 		}
 		return Optional.empty();
 	}
-	
+
 	/**
 	 * TODO this might need to move to a Util 
 	 * @param level
