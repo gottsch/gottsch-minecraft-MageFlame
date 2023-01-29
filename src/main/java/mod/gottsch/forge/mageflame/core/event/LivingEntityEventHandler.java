@@ -2,8 +2,11 @@ package mod.gottsch.forge.mageflame.core.event;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.entity.creature.ISummonFlameEntity;
+import mod.gottsch.forge.mageflame.core.entity.creature.SummonFlameBaseEntity;
 import mod.gottsch.forge.mageflame.core.registry.SummonFlameRegistry;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -32,16 +35,45 @@ public class LivingEntityEventHandler {
 			return;
 		}
 		if (event.getEntity() instanceof ISummonFlameEntity) {
-			ISummonFlameEntity entity = (ISummonFlameEntity)event.getEntity();
-			
+			MageFlame.LOGGER.debug("entity is joing the level -> {}", event.getEntity().getClass().getSimpleName());
+			SummonFlameBaseEntity entity = (SummonFlameBaseEntity)event.getEntity();
+			ServerLevel serverLevel = (ServerLevel)event.getEntity().level;
+
 			// register the entity
 			if (entity.getOwnerUUID() != null) {
+				MageFlame.LOGGER.debug("entity -> {} has owner -> {}", event.getEntity().getStringUUID(), entity.getOwnerUUID().toString());
 				if(!SummonFlameRegistry.isRegistered(entity.getOwnerUUID())) {
+					MageFlame.LOGGER.debug("owner is not registered -> {}", entity.getOwnerUUID().toString());
 					SummonFlameRegistry.register(entity.getOwnerUUID(), event.getEntity().getUUID());
 				}
-			}
-			else {
-				entity.die();
+				/*
+				 * NOTE this is an edge-case scenario where the entity was not unregistered and killed
+				 *  and it attempts to reunite with owner.
+				 *  TODO need to add additional info like gameTime to determine which is the younger (to keep).
+				 */
+				else if (!SummonFlameRegistry.get(entity.getOwnerUUID()).equals(event.getEntity().getUUID())) {
+					MageFlame.LOGGER.debug("event entity -> {} has a previously registered owner -> {} and not the existing entity", event.getEntity().getStringUUID(), entity.getOwnerUUID());
+					/*
+					 *  registered to another entity, check who the younger is
+					 */
+					Entity existingEntity = serverLevel.getEntity(SummonFlameRegistry.get(entity.getOwnerUUID()));
+					if (existingEntity != null && existingEntity instanceof ISummonFlameEntity) {
+						MageFlame.LOGGER.debug("found existing entity -> {}", existingEntity.getStringUUID());
+						MageFlame.LOGGER.debug("existing birth -> {}, entity birth -> {}", ((ISummonFlameEntity)existingEntity).getBirthTime(), entity.getBirthTime());
+						SummonFlameBaseEntity existingFlameEntity = (SummonFlameBaseEntity)existingEntity;
+						// check if this entity is younger than the existing entity
+						if (entity.getBirthTime() > ((ISummonFlameEntity)existingEntity).getBirthTime()) {
+							MageFlame.LOGGER.debug("killing existing -> {}", existingEntity.getStringUUID());
+							// kill the existing registered entity
+							existingFlameEntity.setOwner(null);
+							SummonFlameRegistry.register(entity.getOwnerUUID(), event.getEntity().getUUID());
+							MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", event.getEntity().getUUID(), entity.getOwnerUUID());
+						} else {
+							MageFlame.LOGGER.debug("killing myself -> {}", event.getEntity().getStringUUID());
+							entity.setOwner(null);
+						}
+					}
+				}
 			}
 			
 			// update position and light blocks
