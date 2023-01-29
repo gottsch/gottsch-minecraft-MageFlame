@@ -18,7 +18,6 @@
 package mod.gottsch.forge.mageflame.core.entity.creature;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -61,11 +60,13 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	public static final String OWNER = "owner";
 	public static final String LAST_LIGHT_COORDS = "currentLightCoords";
 	public static final String CURRENT_LIGHT_COORDS = "currentLightCoords";
+	public static final String BIRTH_TIME = "birthTime";
 	public static final String LIFESPAN = "lifespan";
 	
 	private ICoords currentLightCoords;
 	private ICoords lastLightCoords;
 	
+	private long birthTime;
 	private double lifespan;
 
 	/**
@@ -76,6 +77,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	 */
 	protected SummonFlameBaseEntity(EntityType<? extends FlyingMob> entity, Level level, double lifespan) {
 		super(entity, level);
+		this.birthTime = level.getGameTime();
 		this.lifespan = lifespan;
 		this.moveControl = new SummonFlameMoveControl(this);
 	}
@@ -272,6 +274,9 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		// hide the entity
 		setInvisible(true);
 
+		// set dead
+		this.dead = true;
+		
 		// remove light blocks
 		if (getCurrentLightCoords() != null && level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
 			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
@@ -308,7 +313,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			CompoundTag coordsTag = new CompoundTag();
 			tag.put(LAST_LIGHT_COORDS, getLastLightCoords().save(coordsTag));
 		}
-		
+		tag.putLong(BIRTH_TIME, getBirthTime());
 		tag.putDouble(LIFESPAN, getLifespan());
 	}
 
@@ -332,6 +337,9 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			ICoords coords = Coords.EMPTY.load(tag.getCompound(LAST_LIGHT_COORDS));
 			setLastLightCoords(coords);
 		}
+		if (tag.contains(BIRTH_TIME)) {
+			setBirthTime(tag.getLong(BIRTH_TIME));
+		}
 		if (tag.contains(LIFESPAN)) {
 			setLifespan(tag.getDouble(LIFESPAN));
 		}
@@ -350,7 +358,12 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 	@Override
 	public void setOwner(LivingEntity entity) {
-		setOwnerUUID(entity.getUUID());
+		if (entity == null) {
+			setOwnerUUID(null);
+		}
+		else {
+			setOwnerUUID(entity.getUUID());
+		}
 	}
 
 	@Override
@@ -359,7 +372,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		return this.entityData.get(DATA_OWNER_UUID).orElse((UUID)null);
 	}
 
-	public void setOwnerUUID(@Nullable UUID owner) {
+	private void setOwnerUUID(@Nullable UUID owner) {
 		this.entityData.set(DATA_OWNER_UUID, Optional.ofNullable(owner));
 	}
 
@@ -509,5 +522,15 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	@Override
 	public void setLifespan(double lifespan) {
 		this.lifespan = lifespan;
+	}
+	
+	@Override
+	public long getBirthTime() {
+		return birthTime;
+	}
+
+	@Override
+	public void setBirthTime(long birthTime) {
+		this.birthTime = birthTime;
 	}
 }

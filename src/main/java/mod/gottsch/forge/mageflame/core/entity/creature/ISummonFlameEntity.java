@@ -45,6 +45,9 @@ public interface ISummonFlameEntity {
 	public ICoords getLastLightCoords();
 	public void setLastLightCoords(ICoords lastLighCoords);
 
+	long getBirthTime();
+	void setBirthTime(long birthdate);
+	
 	double getLifespan();
 	void setLifespan(double lifespan);
 	
