@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.mageflame.core.entity.creature.ISummonFlameEntity;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
@@ -106,8 +107,10 @@ public abstract class SummonFlameBaseItem extends Item implements ISummonFlameIt
 		Vec3 spawnPos = getByPlayerPos(player);
 
 		// spawn entity
+		MageFlame.LOGGER.debug("using summon flame item...");
 		Optional<Mob> mob = spawn((ServerLevel)level, new Random(), player, getSummonFlameEntity(), spawnPos);
 		if (mob.isPresent()) {
+			MageFlame.LOGGER.debug("summon flame is present...");
 			// reduce scroll stack size ie consume
 			heldStack.shrink(1);
 			return InteractionResultHolder.consume(heldStack);
