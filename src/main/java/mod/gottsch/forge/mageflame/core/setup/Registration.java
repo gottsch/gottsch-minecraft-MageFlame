@@ -48,17 +48,17 @@ public class Registration {
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 11;
-					}).noLootTable().air()));
+					}).noLootTable()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 13;
-					}).noLootTable().air()));
+					}).noLootTable()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 15;
-					}).noLootTable().air()));
+					}).noLootTable()));
 
 	// items
 	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
