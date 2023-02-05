@@ -2,7 +2,7 @@ modLoader="javafml"
 # mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 loaderVersion="[43,)" 
 # License
-license="GNU GPL v3"
+license="LGPL v3"
 
 # A URL to refer people to when problems occur with this mod
 # optional
