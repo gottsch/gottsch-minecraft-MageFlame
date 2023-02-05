@@ -1,3 +1,20 @@
+/*
+ * This file is part of  Mage Flame.
+ * Copyright (c) 2023 Mark Gottschling (gottsch)
+ *
+ * Mage Flame is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Mage Flame is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Mage Flame.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package mod.gottsch.forge.mageflame.core.event;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
@@ -16,7 +33,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 /**
  * 
- * @author Mark Gottschling on Nov 6, 2022
+ * @author Mark Gottschling 2023
  *
  */
 @Mod.EventBusSubscriber(modid = MageFlame.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
@@ -35,15 +52,15 @@ public class LivingEntityEventHandler {
 			return;
 		}
 		if (event.getEntity() instanceof ISummonFlameEntity) {
-			MageFlame.LOGGER.debug("entity is joing the level -> {}", event.getEntity().getClass().getSimpleName());
+			// MageFlame.LOGGER.debug("entity is joing the level -> {}", event.getEntity().getClass().getSimpleName());
 			SummonFlameBaseEntity entity = (SummonFlameBaseEntity)event.getEntity();
 			ServerLevel serverLevel = (ServerLevel)event.getEntity().level;
 
 			// register the entity
 			if (entity.getOwnerUUID() != null) {
-				MageFlame.LOGGER.debug("entity -> {} has owner -> {}", event.getEntity().getStringUUID(), entity.getOwnerUUID().toString());
+				// MageFlame.LOGGER.debug("entity -> {} has owner -> {}", event.getEntity().getStringUUID(), entity.getOwnerUUID().toString());
 				if(!SummonFlameRegistry.isRegistered(entity.getOwnerUUID())) {
-					MageFlame.LOGGER.debug("owner is not registered -> {}", entity.getOwnerUUID().toString());
+					// MageFlame.LOGGER.debug("owner is not registered -> {}", entity.getOwnerUUID().toString());
 					SummonFlameRegistry.register(entity.getOwnerUUID(), event.getEntity().getUUID());
 				}
 				/*
@@ -52,24 +69,24 @@ public class LivingEntityEventHandler {
 				 *  TODO need to add additional info like gameTime to determine which is the younger (to keep).
 				 */
 				else if (!SummonFlameRegistry.get(entity.getOwnerUUID()).equals(event.getEntity().getUUID())) {
-					MageFlame.LOGGER.debug("event entity -> {} has a previously registered owner -> {} and not the existing entity", event.getEntity().getStringUUID(), entity.getOwnerUUID());
+					// MageFlame.LOGGER.debug("event entity -> {} has a previously registered owner -> {} and not the existing entity", event.getEntity().getStringUUID(), entity.getOwnerUUID());
 					/*
 					 *  registered to another entity, check who the younger is
 					 */
 					Entity existingEntity = serverLevel.getEntity(SummonFlameRegistry.get(entity.getOwnerUUID()));
 					if (existingEntity != null && existingEntity instanceof ISummonFlameEntity) {
-						MageFlame.LOGGER.debug("found existing entity -> {}", existingEntity.getStringUUID());
-						MageFlame.LOGGER.debug("existing birth -> {}, entity birth -> {}", ((ISummonFlameEntity)existingEntity).getBirthTime(), entity.getBirthTime());
+						// MageFlame.LOGGER.debug("found existing entity -> {}", existingEntity.getStringUUID());
+						// MageFlame.LOGGER.debug("existing birth -> {}, entity birth -> {}", ((ISummonFlameEntity)existingEntity).getBirthTime(), entity.getBirthTime());
 						SummonFlameBaseEntity existingFlameEntity = (SummonFlameBaseEntity)existingEntity;
 						// check if this entity is younger than the existing entity
 						if (entity.getBirthTime() > ((ISummonFlameEntity)existingEntity).getBirthTime()) {
-							MageFlame.LOGGER.debug("killing existing -> {}", existingEntity.getStringUUID());
+							// MageFlame.LOGGER.debug("killing existing -> {}", existingEntity.getStringUUID());
 							// kill the existing registered entity
 							existingFlameEntity.setOwner(null);
 							SummonFlameRegistry.register(entity.getOwnerUUID(), event.getEntity().getUUID());
-							MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", event.getEntity().getUUID(), entity.getOwnerUUID());
+							// MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", event.getEntity().getUUID(), entity.getOwnerUUID());
 						} else {
-							MageFlame.LOGGER.debug("killing myself -> {}", event.getEntity().getStringUUID());
+							// MageFlame.LOGGER.debug("killing myself -> {}", event.getEntity().getStringUUID());
 							entity.setOwner(null);
 						}
 					}
