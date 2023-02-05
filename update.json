@@ -1,11 +1,12 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mage-flame",
     "promos": {
-    "1.19.2-latest": "1.1.1",
-    "1.19.2-recommended": "1.1.1"
+    "1.19.2-latest": "1.1.2",
+    "1.19.2-recommended": "1.1.2"
   },
     "1.19.2": {
          "1.1.0": "Initial release.",
-         "1.1.1": "Fixed entity race condition causing lighting not to clean up properly."
+         "1.1.1": "Fixed entity race condition causing lighting not to clean up properly.",
+         "1.1.2": "Fixed issue of no light being set when in an all-air chunk section."
     }
 }
