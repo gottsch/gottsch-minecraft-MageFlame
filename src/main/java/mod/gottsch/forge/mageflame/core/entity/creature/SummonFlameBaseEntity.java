@@ -176,6 +176,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 	@Override
 	public void updateLightBlocks() {
+        if (this.dead) {
+            return;
+        }
+        
 		// initial setup
 		if (getCurrentLightCoords() == null) {
 			if (!updateLightCoords()) {

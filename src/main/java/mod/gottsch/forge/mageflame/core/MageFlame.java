@@ -32,7 +32,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * 
- * @author Mark Gottschling on Nov 6, 2022
+ * @author Mark Gottschling 2023
  *
  */
 @Mod(value = MageFlame.MOD_ID)

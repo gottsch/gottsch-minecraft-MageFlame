@@ -62,7 +62,7 @@ public class SummonFlameRegistry {
 	 */
 	public void load(ListTag listTag) {
 		if (listTag != null) {
-			MageFlame.LOGGER.debug("loading summon flame registry...");  	
+			// MageFlame.LOGGER.debug("loading summon flame registry...");  	
 			listTag.forEach(element -> {
 				
 				CompoundTag tag = (CompoundTag)element;
