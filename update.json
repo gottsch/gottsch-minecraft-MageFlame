@@ -1,10 +1,10 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mage-flame",
     "promos": {
-    "1.19.2-latest": "1.1.1",
-    "1.19.2-recommended": "1.1.1"
+    "1.19.3-latest": "1.1.1",
+    "1.19.3-recommended": "1.1.1"
   },
-    "1.19.2": {
+    "1.19.3": {
          "1.0.0": "Initial release.",
          "1.1.0": "Improve entity management",
          "1.1.1": "Fixed entity race condition causing lighting not to clean up properly."
