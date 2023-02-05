@@ -168,9 +168,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					die();
 					return;
 				}
+				updateLightBlocks();
 			}
-
-			updateLightBlocks();
 		}
 	}
 
@@ -191,6 +190,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
 		} else {
 			if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
+//				MageFlame.LOGGER.debug("current pos is not the same -> {}", getCurrentLightCoords().toShortString());
+				
 				// test location if fluids
 				BlockState currentState = level.getBlockState(blockPosition());
 				if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
@@ -203,8 +204,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					}
 
 					// update block with flame
-					level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
-
+					level.setBlock(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
+					
 					// delete old
 					level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
 				}

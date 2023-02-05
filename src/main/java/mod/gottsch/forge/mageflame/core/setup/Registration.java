@@ -18,6 +18,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,17 +50,17 @@ public class Registration {
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 11;
-					}).noDrops().air()));
+					}).noDrops()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 13;
-					}).noDrops().air()));
+					}).noDrops()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 15;
-					}).noDrops().air()));
+					}).noDrops()));
 
 	// items
 	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
