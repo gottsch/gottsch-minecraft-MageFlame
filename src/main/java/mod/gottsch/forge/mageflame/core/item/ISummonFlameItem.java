@@ -91,25 +91,25 @@ public interface ISummonFlameItem {
 				// create entity
 				Mob mob = entityType.create(level);
 				if (mob != null) {
-					MageFlame.LOGGER.debug("new entity is created -> {}", mob.getStringUUID());
+					// MageFlame.LOGGER.debug("new entity is created -> {}", mob.getStringUUID());
 					mob.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 					((ISummonFlameEntity)mob).setOwner(owner);
 
-					MageFlame.LOGGER.debug("is owner registered -> {}", SummonFlameRegistry.isRegistered(owner.getUUID()));
+					// MageFlame.LOGGER.debug("is owner registered -> {}", SummonFlameRegistry.isRegistered(owner.getUUID()));
 					// check and remove existing owner's entity, regardless if existing entity is located
 					if (SummonFlameRegistry.isRegistered(owner.getUUID())) {
 						// unregister existing entity for player
 						UUID existingUuid = SummonFlameRegistry.unregister(owner.getUUID());
-						MageFlame.LOGGER.debug("owner is registered to entity -> {}", existingUuid.toString());
+						// MageFlame.LOGGER.debug("owner is registered to entity -> {}", existingUuid.toString());
 						Entity existingMob = level.getEntity(existingUuid);
 						if (existingMob != null) {
-							MageFlame.LOGGER.debug("located and killing exisiting entity -> {}", existingUuid.toString());
+							// MageFlame.LOGGER.debug("located and killing exisiting entity -> {}", existingUuid.toString());
 							((LivingEntity)existingMob).die(DamageSource.GENERIC);
 						}
 					}
 
 					// registry entity
-					MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
+					// MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
 					SummonFlameRegistry.register(owner.getUUID(), mob.getUUID());
 
 					// add entity into the level (ie EntityJoinWorldEvent)
