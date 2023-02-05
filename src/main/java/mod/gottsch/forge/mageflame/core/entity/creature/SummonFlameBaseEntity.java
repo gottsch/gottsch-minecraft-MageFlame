@@ -168,8 +168,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					die();
 					return;
 				}
-				updateLightBlocks();
 			}
+			updateLightBlocks();
 		}
 	}
 
