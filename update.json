@@ -6,6 +6,7 @@
   },
     "1.19.2": {
          "1.0.0": "Initial release.",
+         "1.1.0": "Improve entity management",
          "1.1.1": "Fixed entity race condition causing lighting not to clean up properly."
     }
 }

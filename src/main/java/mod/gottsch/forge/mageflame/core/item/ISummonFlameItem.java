@@ -19,6 +19,7 @@ package mod.gottsch.forge.mageflame.core.item;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.mageflame.core.MageFlame;
@@ -28,8 +29,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +36,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.phys.Vec3;
@@ -87,31 +85,42 @@ public interface ISummonFlameItem {
 
 			SpawnPlacements.Type placement = SpawnPlacements.getPlacementType(entityType);
 			if (NaturalSpawner.isSpawnPositionOk(placement, level, new BlockPos(spawnPos), entityType)) {
-				// check and remove existing owner's mob
-				if (SummonFlameRegistry.isRegistered(owner.getUUID())) {
-					Entity existingMob = level.getEntity(SummonFlameRegistry.get(owner.getUUID()));
-					if (existingMob != null) {
-						((LivingEntity)existingMob).die(DamageSource.GENERIC);
-					}
-					SummonFlameRegistry.unregister(owner.getUUID());
-				}
-				
-				// create mob
+				// create entity
 				Mob mob = entityType.create(level);
-				mob.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-				((ISummonFlameEntity)mob).setOwner(owner);
-				level.addFreshEntityWithPassengers(mob);
+				if (mob != null) {
+					// MageFlame.LOGGER.debug("new entity is created -> {}", mob.getStringUUID());
+					mob.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+					((ISummonFlameEntity)mob).setOwner(owner);
 
-				// registry entity
-				MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
-				SummonFlameRegistry.register(owner.getUUID(), mob.getUUID());
+					// MageFlame.LOGGER.debug("is owner registered -> {}", SummonFlameRegistry.isRegistered(owner.getUUID()));
+					// check and remove existing owner's entity, regardless if existing entity is located
+					if (SummonFlameRegistry.isRegistered(owner.getUUID())) {
+						// unregister existing entity for player
+						UUID existingUuid = SummonFlameRegistry.unregister(owner.getUUID());
+						// MageFlame.LOGGER.debug("owner is registered to entity -> {}", existingUuid.toString());
+						Entity existingMob = level.getEntity(existingUuid);
+						if (existingMob != null) {
+							// MageFlame.LOGGER.debug("located and killing exisiting entity -> {}", existingUuid.toString());
+							((LivingEntity)existingMob).die(DamageSource.GENERIC);
+						}
+					}
 
-				// cast effects
-				for (int p = 0; p < 20; p++) {
-					double xSpeed = random.nextGaussian() * 0.02D;
-					double ySpeed = random.nextGaussian() * 0.02D;
-					double zSpeed = random.nextGaussian() * 0.02D;
-					level.sendParticles(ParticleTypes.POOF, owner.getX(), owner.getY() + 0.5, owner.getZ(), 1, xSpeed, ySpeed, zSpeed, (double)0.15F);
+					// registry entity
+					// MageFlame.LOGGER.debug("registering entity -> {} to owner -> {}", mob.getUUID(), owner.getUUID());
+					SummonFlameRegistry.register(owner.getUUID(), mob.getUUID());
+
+					// add entity into the level (ie EntityJoinWorldEvent)
+					level.addFreshEntityWithPassengers(mob);
+
+					// cast effects
+					for (int p = 0; p < 20; p++) {
+						double xSpeed = random.nextGaussian() * 0.02D;
+						double ySpeed = random.nextGaussian() * 0.02D;
+						double zSpeed = random.nextGaussian() * 0.02D;
+						level.sendParticles(ParticleTypes.POOF, owner.getX(), owner.getY() + 0.5, owner.getZ(), 1, xSpeed, ySpeed, zSpeed, (double)0.15F);
+					}
+
+					return Optional.of(mob);
 				}
 				return Optional.of(mob);
 			}
