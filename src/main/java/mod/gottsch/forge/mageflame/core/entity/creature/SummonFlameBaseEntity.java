@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.mageflame.core.MageFlame;
+import mod.gottsch.forge.mageflame.core.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -187,13 +188,13 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			}
 			// set last = current as they are in the same place
 			setLastLightCoords(getCurrentLightCoords());
-			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
+			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
 		} else {
 			if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
 				// test location if fluids
 				BlockState currentState = level.getBlockState(blockPosition());
 				if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
-					level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
+					LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 				}
 				else {
 					if (!updateLightCoords()) {
@@ -202,10 +203,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					}
 
 					// update block with flame
-					level.setBlockAndUpdate(getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState());
+					LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
 
 					// delete old
-					level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
+					LevelUtil.setBlockForced(this.level, getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 				}
 			}
 		}
@@ -282,10 +283,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 				
 		// remove light blocks
 		if (getCurrentLightCoords() != null && level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
-			level.setBlockAndUpdate(getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState());
+			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 		}
 		if (getLastLightCoords() != null && level.getBlockState(getLastLightCoords().toPos()).getBlock() == getFlameBlock()) {
-			level.setBlockAndUpdate(getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState());
+			LevelUtil.setBlockForced(this.level, getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 		}			
 		remove(RemovalReason.KILLED);
 		super.die(damageSource);
