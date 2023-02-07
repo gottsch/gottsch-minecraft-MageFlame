@@ -17,7 +17,7 @@ displayName="Mage Flame" #mandatory
 updateJSONURL="https://raw.githubusercontent.com/gottsch/gottsch-minecraft-MageFlame/1.18.2-main/update.json"
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://www.curseforge.com/minecraft/mc-mods/mage-flamet" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/mage-flame" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
 #logoFile="examplemod.png" #optional

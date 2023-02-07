@@ -48,17 +48,17 @@ public class Registration {
 	// Blocks
 	public static final RegistryObject<Block> MAGE_FLAME_BLOCK = Registration.BLOCKS.register(MAGE_FLAME,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
-					.noCollission().lightLevel((state) -> {
+					.noCollission().noOcclusion().lightLevel((state) -> {
 						return 11;
 					}).noDrops()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
-					.noCollission().lightLevel((state) -> {
+					.noCollission().noOcclusion().lightLevel((state) -> {
 						return 13;
 					}).noDrops()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
 			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
-					.noCollission().lightLevel((state) -> {
+					.noCollission().noOcclusion().lightLevel((state) -> {
 						return 15;
 					}).noDrops()));
 

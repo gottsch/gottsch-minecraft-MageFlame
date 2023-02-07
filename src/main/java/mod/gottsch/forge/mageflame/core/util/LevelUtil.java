@@ -20,14 +20,18 @@ package mod.gottsch.forge.mageflame.core.util;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import mod.gottsch.forge.mageflame.core.block.ISummonFlameBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.material.FluidState;
 
 /**
  * 
@@ -75,20 +79,20 @@ public class LevelUtil {
 			int oldLight = oldState.getLightEmission(level, pos);
 			int oldOpacity = oldState.getLightBlock(level, pos);
 
-			BlockState updatedChunkBlockState = setBlockStateForced(levelChunk, pos, state, (flag & 64) != 0);
-			if (updatedChunkBlockState == null) {
+			BlockState previoiusChunkBlockState = setBlockStateForced(levelChunk, pos, state, (flag & 64) != 0);
+			if (previoiusChunkBlockState == null) {
 				if (blockSnapshot != null) level.capturedBlockSnapshots.remove(blockSnapshot);
 				return false;
 			} else {
 				BlockState currentLevelBlockstate = level.getBlockState(pos);
-				if ((flag & 128) == 0 && currentLevelBlockstate != updatedChunkBlockState && (currentLevelBlockstate.getLightBlock(level, pos) != oldOpacity || currentLevelBlockstate.getLightEmission(level, pos) != oldLight || currentLevelBlockstate.useShapeForLightOcclusion() || updatedChunkBlockState.useShapeForLightOcclusion())) {
+				if ((flag & 128) == 0 && currentLevelBlockstate != previoiusChunkBlockState && (currentLevelBlockstate.getLightBlock(level, pos) != oldOpacity || currentLevelBlockstate.getLightEmission(level, pos) != oldLight || currentLevelBlockstate.useShapeForLightOcclusion() || previoiusChunkBlockState.useShapeForLightOcclusion())) {
 					level.getProfiler().push("queueCheckLight");
 					level.getChunkSource().getLightEngine().checkBlock(pos);
 					level.getProfiler().pop();
 				}
 
 				if (blockSnapshot == null) { // Don't notify clients or update physics while capturing blockstates
-					level.markAndNotifyBlock(pos, levelChunk, updatedChunkBlockState, state, flag, value512);
+					level.markAndNotifyBlock(pos, levelChunk, previoiusChunkBlockState, state, flag, value512);
 				}
 
 				return true;
@@ -104,41 +108,105 @@ public class LevelUtil {
 	 * @param updateFlag
 	 * @return
 	 */
-	private static BlockState setBlockStateForced(LevelChunk levelChunk, BlockPos pos, BlockState state, boolean updateFlag) {
-		int yPos = pos.getY();
-		LevelChunkSection levelChunkSection = levelChunk.getSection(levelChunk.getSectionIndex(yPos));
-		boolean onlyAirFlag = levelChunkSection.hasOnlyAir();
+	   public static BlockState setBlockStateForced(LevelChunk levelChunk, BlockPos pos, BlockState state, boolean updateFlag) {
+		   int yPos = pos.getY();
+	      LevelChunkSection levelChunkSection = levelChunk.getSection(levelChunk.getSectionIndex(yPos));
+	      boolean flag = levelChunkSection.hasOnlyAir();
+	      if (flag && (state.isAir() && !(state.getBlock() instanceof ISummonFlameBlock))) {
+	         return null;
+	      } else {
+	         int x = pos.getX() & 15;
+	         int y = yPos & 15;
+	         int z = pos.getZ() & 15;
+	         BlockState previousBlockState = setSectionBlockState(levelChunkSection, x, y, z, state, true);
+	         if (previousBlockState == state) {
+	            return null;
+	         } else {
+	            Block block = state.getBlock();
+	            updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.MOTION_BLOCKING, x, y, z, state);
+	            updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, y, z, state);
+	            updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.OCEAN_FLOOR, x, y, z, state);
+	            updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.WORLD_SURFACE, x, y, z, state);
+		           
+//	            levelChunk.heightmaps.get(Heightmap.Types.MOTION_BLOCKING).update(j, i, l, state);
+//	            levelChunk.heightmaps.get(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES).update(j, i, l, state);
+//	            levelChunk.heightmaps.get(Heightmap.Types.OCEAN_FLOOR).update(j, i, l, state);
+//	            levelChunk.heightmaps.get(Heightmap.Types.WORLD_SURFACE).update(j, i, l, state);
+	            boolean flag1 = levelChunkSection.hasOnlyAir();
+	            if (flag != flag1) {
+	               levelChunk.getLevel().getChunkSource().getLightEngine().updateSectionStatus(pos, flag1);
+	            }
 
-		int x = pos.getX() & 15;
-		int y = yPos & 15;
-		int z = pos.getZ() & 15;
-		BlockState updatedChunkBlockState = levelChunkSection.setBlockState(x, y, z, state);
-		if (updatedChunkBlockState == state) {
-			return null;
-		} else {
-			Block block = state.getBlock();
-			updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.MOTION_BLOCKING, x, yPos, z, state);
-			updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, yPos, z, state);
-			updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.OCEAN_FLOOR, x, yPos, z, state);
-			updateHeightmaps(levelChunk.getHeightmaps(), Heightmap.Types.WORLD_SURFACE, x, yPos, z, state);
-			boolean flag1 = levelChunkSection.hasOnlyAir();
-			if (onlyAirFlag != flag1) {
-				levelChunk.getLevel().getChunkSource().getLightEngine().updateSectionStatus(pos, flag1);
-			}
+	            boolean flag2 = previousBlockState.hasBlockEntity();
+	            if (!levelChunk.getLevel().isClientSide) {
+	               previousBlockState.onRemove(levelChunk.getLevel(), pos, state, updateFlag);
+	         } else if ((!previousBlockState.is(block) || !state.hasBlockEntity()) && flag2) {
+	               levelChunk.removeBlockEntity(pos);
+	            }
 
-			if (!levelChunkSection.getBlockState(x, y, z).is(block)) {
-				return null;
-			} else {
-				if (!levelChunk.getLevel().isClientSide && !levelChunk.getLevel().captureBlockSnapshots) {
-					state.onPlace(levelChunk.getLevel(), pos, updatedChunkBlockState, updateFlag);
-				}
+	            if (!levelChunkSection.getBlockState(x, y, z).is(block)) {
+	               return null;
+	            } else {
+	            if (!levelChunk.getLevel().isClientSide && !levelChunk.getLevel().captureBlockSnapshots) {
+	                  state.onPlace(levelChunk.getLevel(), pos, previousBlockState, updateFlag);
+	               }
 
-				levelChunk.setUnsaved(true);
-				return updatedChunkBlockState;
-			}
-		}
+//	               if (state.hasBlockEntity()) {
+//	                  BlockEntity blockentity = levelChunk.getBlockEntity(pos, LevelChunk.EntityCreationType.CHECK);
+//	                  if (blockentity == null) {
+//	                     blockentity = ((EntityBlock)block).newBlockEntity(pos, state);
+//	                     if (blockentity != null) {
+//	                        levelChunk.addAndRegisterBlockEntity(blockentity);
+//	                     }
+//	                  } else {
+//	                     blockentity.setBlockState(state);
+//	                     levelChunk.updateBlockEntityTicker(blockentity);
+//	                  }
+//	               }
+
+	               levelChunk.setUnsaved(true);
+	               return previousBlockState;
+	            }
+	         }
+	      }
 	}
 
+	   public static BlockState setSectionBlockState(LevelChunkSection section, int x, int y, int z, BlockState newBlockState, boolean flag) {
+		      BlockState previousBlockState;
+		      if (flag) {
+		         previousBlockState = section.getStates().getAndSet(x, y, z, newBlockState);
+		      } else {
+		         previousBlockState = section.getStates().getAndSetUnchecked(x, y, z, newBlockState);
+		      }
+
+		      FluidState previousFluidState = previousBlockState.getFluidState();
+		      FluidState newFluidState = newBlockState.getFluidState();
+		      
+		      if (!previousBlockState.isAir() || previousBlockState.getBlock() instanceof ISummonFlameBlock) {
+		         --section.nonEmptyBlockCount;
+		         if (previousBlockState.isRandomlyTicking()) {
+		            --section.tickingBlockCount;
+		         }
+		      }
+
+		      if (!previousFluidState.isEmpty()) {
+		         --section.tickingFluidCount;
+		      }
+
+//		      if (!newBlockState.isAir()) {
+		      if (!newBlockState.isAir() || newBlockState.getBlock() instanceof ISummonFlameBlock) {
+		         ++section.nonEmptyBlockCount;
+		         if (newBlockState.isRandomlyTicking()) {
+		            ++section.tickingBlockCount;
+		         }
+		      }
+
+		      if (!newFluidState.isEmpty()) {
+		         ++section.tickingFluidCount;
+		      }
+
+		      return previousBlockState;
+		   }
 	/**
 	 * 
 	 * @param heightmaps
