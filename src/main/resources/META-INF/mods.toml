@@ -10,7 +10,7 @@ issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-MageFlame/issues"
 
 [[mods]] #mandatory
 modId="mageflame" #mandatory
-version="1.1.2" #mandatory
+version="1.2.0" #mandatory
 displayName="Mage Flame" #mandatory
 
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
