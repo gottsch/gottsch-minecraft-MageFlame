@@ -28,6 +28,7 @@ import org.checkerframework.common.returnsreceiver.qual.This;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.mageflame.core.MageFlame;
+import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.mageflame.core.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,6 +37,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -65,10 +68,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	public static final String CURRENT_LIGHT_COORDS = "currentLightCoords";
 	public static final String BIRTH_TIME = "birthTime";
 	public static final String LIFESPAN = "lifespan";
-	
+
 	private ICoords currentLightCoords;
 	private ICoords lastLightCoords;
-	
+
 	private long birthTime;
 	private double lifespan;
 
@@ -84,7 +87,17 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		this.lifespan = lifespan;
 		this.moveControl = new SummonFlameMoveControl(this);
 	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		// do not play a sound
+	}
 	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.CAMPFIRE_CRACKLE;
+	}
+
 	@Override
 	public void doDeathEffects() {
 		if (!level.isClientSide) {
@@ -145,11 +158,11 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			}
 		}
 	}
-	
+
 	protected double updateLifespan() {
 		return --this.lifespan;
 	}
-	
+
 	@Override
 	public void aiStep() {
 		super.aiStep();
@@ -172,16 +185,19 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					return;
 				}
 			}
-			updateLightBlocks();
+			// TODO add 0-20 ticks config value on how often to update this 
+			if (this.level.getGameTime() % Config.SERVER.updateLightTicks.get() == 0) {
+				updateLightBlocks();
+			}
 		}
 	}
 
 	@Override
 	public void updateLightBlocks() {
-        if (this.dead) {
-            return;
-        }
-        
+		if (this.dead) {
+			return;
+		}
+
 		// initial setup
 		if (getCurrentLightCoords() == null) {
 			if (!updateLightCoords()) {
@@ -193,8 +209,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
 		} else {
 			if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
-//				MageFlame.LOGGER.debug("current pos is not the same -> {}", getCurrentLightCoords().toShortString());
-				
+				//				MageFlame.LOGGER.debug("current pos is not the same -> {}", getCurrentLightCoords().toShortString());
+
 				// test location if fluids
 				BlockState currentState = level.getBlockState(blockPosition());
 				if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
@@ -208,7 +224,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 					// update block with flame
 					LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
-					
+
 					// delete old
 					LevelUtil.setBlockForced(this.level, getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 				}
@@ -274,7 +290,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	public void die() {
 		die(DamageSource.GENERIC);
 	}
-	
+
 	@Override
 	public void die(DamageSource damageSource) {
 		doDeathEffects();
@@ -284,7 +300,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 		// set dead
 		this.dead = true;
-		
+
 		// remove light blocks
 		if (getCurrentLightCoords() != null && level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
 			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
@@ -294,7 +310,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		}			
 		remove(RemovalReason.KILLED);
 		super.die(damageSource);
-//		this.level.broadcastEntityEvent(this, (byte)3);
+		//		this.level.broadcastEntityEvent(this, (byte)3);
 	}
 
 	/**
@@ -322,7 +338,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			CompoundTag coordsTag = new CompoundTag();
 			tag.put(LAST_LIGHT_COORDS, getLastLightCoords().save(coordsTag));
 		}
-		
+
 		tag.putLong(BIRTH_TIME, getBirthTime());
 		tag.putDouble(LIFESPAN, getLifespan());
 	}
