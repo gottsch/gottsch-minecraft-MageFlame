@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.mageflame.core.MageFlame;
+import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.mageflame.core.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,6 +34,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -80,6 +83,16 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		this.birthTime = level.getGameTime();
 		this.lifespan = lifespan;
 		this.moveControl = new SummonFlameMoveControl(this);
+	}
+	
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState state) {
+		// do not play a sound
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.CAMPFIRE_CRACKLE;
 	}
 	
 	@Override
@@ -169,8 +182,9 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					return;
 				}
 			}
-
-			updateLightBlocks();
+			if (this.level.getGameTime() % Config.SERVER.updateLightTicks.get() == 0) {
+				updateLightBlocks();
+			}
 		}
 	}
 
