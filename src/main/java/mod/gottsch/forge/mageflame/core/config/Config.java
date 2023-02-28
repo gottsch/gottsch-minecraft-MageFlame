@@ -76,7 +76,7 @@ public class Config extends AbstractConfig {
 					.defineInRange("greaterRevelationLifespan", 36000, 1200, 72000);
 
 			updateLightTicks = builder
-					.comment(" ")
+					.comment(" The number of ticks before the next light update.")
 					.defineInRange("updateLightTicks", 2, 1, 20);
 			
 			builder.pop();
