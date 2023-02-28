@@ -55,6 +55,7 @@ public class Config extends AbstractConfig {
 		public ForgeConfigSpec.IntValue mageFlameLifespan;
 		public ForgeConfigSpec.IntValue lesserRevelationLifespan;
 		public ForgeConfigSpec.IntValue greaterRevelationLifespan;
+		public ForgeConfigSpec.IntValue updateLightTicks;
 		
 		public ServerConfig(ForgeConfigSpec.Builder builder) {
 
@@ -74,6 +75,10 @@ public class Config extends AbstractConfig {
 					.comment(" The lifespan of a Greater Revelation spell/entity in ticks.")
 					.defineInRange("greaterRevelationLifespan", 36000, 1200, 72000);
 
+			updateLightTicks = builder
+					.comment(" ")
+					.defineInRange("updateLightTicks", 2, 1, 20);
+			
 			builder.pop();
 		}
 	}
