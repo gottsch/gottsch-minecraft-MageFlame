@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.WingedTorchModel;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layer.WingedTorchFlameLayer;
 import mod.gottsch.forge.mageflame.core.entity.creature.WingedTorchEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -42,6 +43,7 @@ public class WingedTorchRenderer<T extends WingedTorchEntity> extends MobRendere
 	 */
 	public WingedTorchRenderer(EntityRendererProvider.Context context) {
 		super(context, new WingedTorchModel<>(context.bakeLayer(WingedTorchModel.LAYER_LOCATION)), 0F);
+		this.addLayer(new WingedTorchFlameLayer<>(this));
 		this.scale = 1.0F;
 	}
 

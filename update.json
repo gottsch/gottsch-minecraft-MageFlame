@@ -1,14 +1,15 @@
 {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mage-flame",
     "promos": {
-    "1.19.2-latest": "1.3.0",
-    "1.19.2-recommended": "1.3.0"
+    "1.19.2-latest": "1.4.0",
+    "1.19.2-recommended": "1.4.0"
   },
     "1.19.2": {
          "1.1.0": "Initial release.",
          "1.1.1": "Fixed entity race condition causing lighting not to clean up properly.",
          "1.1.2": "Fixed issue of no light being set when in an all-air chunk section.",
          "1.2.0": "Added ability to set light in all-air chunk section AND remove block wireframes.",
-         "1.3.0": "Removed walking sound.\nAdded ambient torch sound.\nAdded config to control light updates refresh rate."
+         "1.3.0": "Removed walking sound.\nAdded ambient torch sound.\nAdded config to control light updates refresh rate.",
+         "1.4.0": "Add full-light layers for flame entities.\nFixed Winged Torch model and texture."
     }
 }

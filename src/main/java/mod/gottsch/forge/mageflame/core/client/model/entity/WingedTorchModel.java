@@ -30,6 +30,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -53,6 +54,7 @@ public class WingedTorchModel<T extends Entity> extends EntityModel<T> {
 	 * @param root
 	 */
 	public WingedTorchModel(ModelPart root) {
+		super(RenderType::entityCutout);
 		this.main = root.getChild("main");
 		ModelPart wings = main.getChild("wings");
 		this.rightWing = wings.getChild("rightWing");
@@ -70,10 +72,10 @@ public class WingedTorchModel<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition torch = main.addOrReplaceChild("torch", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -10.0F, -1.0F, 2.0F, 10.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 		PartDefinition wings = main.addOrReplaceChild("wings", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
-		PartDefinition rightWing = wings.addOrReplaceChild("rightWing", CubeListBuilder.create().texOffs(9, 0).mirror().addBox(-5.0F, -0.5F, 0.0F, 5.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -6.5F, 1.0F, 0.0F, 0.1745F, 0.0873F));
-		PartDefinition rightTip = rightWing.addOrReplaceChild("rightTip", CubeListBuilder.create().texOffs(0, 13).mirror().addBox(-3.0F, -2.0F, -0.5F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-5.0F, 1.5F, 0.5F, 0.0F, -0.2618F, 0.0F));
-		PartDefinition leftWing = wings.addOrReplaceChild("leftWing", CubeListBuilder.create().texOffs(9, 0).addBox(0.0F, -0.5F, 0.0F, 5.0F, 5.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.5F, 1.0F, 0.0F, -0.1745F, -0.0873F));
-		PartDefinition leftTip = leftWing.addOrReplaceChild("leftTip", CubeListBuilder.create().texOffs(0, 13).addBox(0.0F, -2.0F, 0.0F, 3.0F, 4.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 1.5F, 0.0F, 0.0F, 0.2618F, 0.0F));
+		PartDefinition rightWing = wings.addOrReplaceChild("rightWing", CubeListBuilder.create().texOffs(10, 1).mirror().addBox(-5.0F, -0.5F, 0.0F, 5.0F, 5.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -6.5F, 1.0F, 0.0F, 0.1745F, 0.0873F));
+		PartDefinition rightTip = rightWing.addOrReplaceChild("rightTip", CubeListBuilder.create().texOffs(1, 14).mirror().addBox(-3.0F, -2.0F, -0.5F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-5.0F, 1.5F, 0.5F, 0.0F, -0.2618F, 0.0F));
+		PartDefinition leftWing = wings.addOrReplaceChild("leftWing", CubeListBuilder.create().texOffs(10, 1).addBox(0.0F, -0.5F, 0.0F, 5.0F, 5.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.5F, 1.0F, 0.0F, -0.1745F, -0.0873F));
+		PartDefinition leftTip = leftWing.addOrReplaceChild("leftTip", CubeListBuilder.create().texOffs(1, 14).addBox(0.0F, -2.0F, 0.0F, 3.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(5.0F, 1.5F, 0.0F, 0.0F, 0.2618F, 0.0F));
 		return LayerDefinition.create(meshdefinition, 32, 32);
 	}
 
