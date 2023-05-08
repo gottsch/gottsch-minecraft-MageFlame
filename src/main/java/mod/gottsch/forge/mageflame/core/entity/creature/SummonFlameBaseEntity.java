@@ -151,7 +151,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		super.tick();
 		if (!this.level.isClientSide) {
 			if (updateLifespan() < 0) {
-				die(DamageSource.GENERIC);
+				die(((ServerLevel)this.level).damageSources().generic());
 			}
 		}
 	}
@@ -282,7 +282,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 	@Override
 	public void die() {
-		die(DamageSource.GENERIC);
+		die(((ServerLevel)level).damageSources().generic());
 	}
 	
 	@Override
