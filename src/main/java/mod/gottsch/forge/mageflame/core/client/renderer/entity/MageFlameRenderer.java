@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layers.MageFlameGlowLayer;
 import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -42,6 +43,7 @@ public class MageFlameRenderer<T extends MageFlameEntity> extends MobRenderer<T,
 	 */
 	public MageFlameRenderer(EntityRendererProvider.Context context) {
 		super(context, new FlameBallModel<>(context.bakeLayer(FlameBallModel.LAYER_LOCATION)), 0F);
+		this.addLayer(new MageFlameGlowLayer<>(this));
 		this.scale = 1.0F;
 	}
 
