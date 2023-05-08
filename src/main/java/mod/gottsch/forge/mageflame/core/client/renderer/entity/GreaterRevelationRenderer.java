@@ -20,9 +20,8 @@ package mod.gottsch.forge.mageflame.core.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
 import mod.gottsch.forge.mageflame.core.client.model.entity.LargeFlameBallModel;
-import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layers.GreaterRevelationGlowLayer;
 import mod.gottsch.forge.mageflame.core.entity.creature.SummonFlameBaseEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -44,6 +43,7 @@ public class GreaterRevelationRenderer<T extends SummonFlameBaseEntity> extends 
 	 */
 	public GreaterRevelationRenderer(EntityRendererProvider.Context context) {
 		super(context, new LargeFlameBallModel<>(context.bakeLayer(LargeFlameBallModel.LAYER_LOCATION)), 0F);
+		this.addLayer(new GreaterRevelationGlowLayer<>(this));
 		this.scale = 1.0F;
 	}
 
