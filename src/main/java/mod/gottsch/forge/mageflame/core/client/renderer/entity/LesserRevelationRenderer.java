@@ -21,8 +21,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layer.LesserRevelationGlowLayer;
 import mod.gottsch.forge.mageflame.core.entity.creature.LesserRevelationEntity;
-import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +43,7 @@ public class LesserRevelationRenderer<T extends LesserRevelationEntity> extends 
 	 */
 	public LesserRevelationRenderer(EntityRendererProvider.Context context) {
 		super(context, new FlameBallModel<>(context.bakeLayer(FlameBallModel.LAYER_LOCATION)), 0F);
+		this.addLayer(new LesserRevelationGlowLayer<>(this));
 		this.scale = 1.2F;
 	}
 
