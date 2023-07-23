@@ -103,7 +103,7 @@ repositories {
 
 dependencies {
      minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
-    compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.2-f43.2.0-v2.0.0")
+    compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.2-f43.2.0-v2.1.0")
   }
 
 // Example for how to get properties into the manifest for reading at runtime.
