@@ -19,8 +19,6 @@ package mod.gottsch.forge.mageflame.core.entity.creature;
 
 import java.util.UUID;
 
-import mod.gottsch.forge.gottschcore.spatial.Coords;
-import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -88,82 +86,81 @@ public interface ISummonFlameEntity {
 	/**
 	 * TODO this might need to move to a Util - this is currently duplicated in ISummonFlameItem
 	 * @param level
-	 * @param vec3
+	 * @param coords
 	 * @param direction
 	 * @return
 	 */
-	default public Vec3 selectSpawnPos(Level level, Vec3 vec3, Direction direction) {
-		ICoords coords = new Coords(vec3);
-
-		if (!level.getBlockState(coords.toPos()).isAir()) {
+	default public Vec3 selectSpawnPos(Level level, Vec3 coords, Direction direction) {
+		Vec3 spawnPos = coords;
+		if (!level.getBlockState(new BlockPos(coords)).isAir()) {
 			// test to the left
 			switch (direction) {
 			default:
 			case NORTH:
-				if (level.getBlockState(coords.add(-1, 0, 0).toPos()).isAir()) return vec3.add(-1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(-1, 0, 0))).isAir()) return coords.add(-1, 0, 0);
 			case SOUTH:
-				if (level.getBlockState(coords.add(1, 0, 0).toPos()).isAir()) return vec3.add(1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(1, 0, 0))).isAir()) return coords.add(1, 0, 0);
 			case EAST :
-				if (level.getBlockState(coords.add(0, 0, -1).toPos()).isAir()) return vec3.add(0, 0, -1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, -1))).isAir()) return coords.add(0, 0, -1);
 			case WEST:
-				if (level.getBlockState(coords.add(0, 0, 1).toPos()).isAir()) return vec3.add(0, 0, 1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, 1))).isAir()) return coords.add(0, 0, 1);
 			};
 
 			// test to the left+down
 			switch (direction) {
 			default:
 			case NORTH:
-				if (level.getBlockState(coords.add(-1, -1, 0).toPos()).isAir()) return vec3.add(-1, -1, 0);
+				if (level.getBlockState(new BlockPos(coords.add(-1, -1, 0))).isAir()) return coords.add(-1, -1, 0);
 			case SOUTH:
-				if (level.getBlockState(coords.add(1, -1, 0).toPos()).isAir()) return vec3.add(1, -1, 0);
+				if (level.getBlockState(new BlockPos(coords.add(1, -1, 0))).isAir()) return coords.add(1, -1, 0);
 			case EAST :
-				if (level.getBlockState(coords.add(0, -1, -1).toPos()).isAir()) return vec3.add(0, -1, -1);
+				if (level.getBlockState(new BlockPos(coords.add(0, -1, -1))).isAir()) return coords.add(0, -1, -1);
 			case WEST:
-				if (level.getBlockState(coords.add(0, -1, 1).toPos()).isAir()) return vec3.add(0, -1, 1);
+				if (level.getBlockState(new BlockPos(coords.add(0, -1, 1))).isAir()) return coords.add(0, -1, 1);
 			};
 
 			// test behind
 			switch (direction) {
 			default:
 			case NORTH:
-				if (level.getBlockState(coords.add(0, 0, 1).toPos()).isAir()) return vec3.add(0, 0, 1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, 1))).isAir()) return coords.add(0, 0, 1);
 			case SOUTH:
-				if (level.getBlockState(coords.add(0, 0, -1).toPos()).isAir()) return vec3.add(0, 0, -1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, -1))).isAir()) return coords.add(0, 0, -1);
 			case EAST :
-				if (level.getBlockState(coords.add(-1, 0, 0).toPos()).isAir()) return vec3.add(-1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(-1, 0, 0))).isAir()) return coords.add(-1, 0, 0);
 			case WEST:
-				if (level.getBlockState(coords.add(1, 0, 0).toPos()).isAir()) return vec3.add(1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(1, 0, 0))).isAir()) return coords.add(1, 0, 0);
 			};
 
 			// test down
-			if (level.getBlockState(coords.add(0, 1, 0).toPos()).isAir()) return vec3.add(0, 1, 0);
+			if (level.getBlockState(new BlockPos(coords.add(0, 1, 0))).isAir()) return coords.add(0, 1, 0);
 
 			// test right
 			switch (direction) {
 			default:
 			case NORTH:
-				if (level.getBlockState(coords.add(1, 0, 0).toPos()).isAir()) return vec3.add(1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(1, 0, 0))).isAir()) return coords.add(1, 0, 0);
 			case SOUTH:
-				if (level.getBlockState(coords.add(-1, 0, 0).toPos()).isAir()) return vec3.add(-1, 0, 0);
+				if (level.getBlockState(new BlockPos(coords.add(-1, 0, 0))).isAir()) return coords.add(-1, 0, 0);
 			case EAST :
-				if (level.getBlockState(coords.add(0, 0, 1).toPos()).isAir()) return vec3.add(0, 0, 1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, 1))).isAir()) return coords.add(0, 0, 1);
 			case WEST:
-				if (level.getBlockState(coords.add(0, 0, -1).toPos()).isAir()) return vec3.add(0, 0, -1);
+				if (level.getBlockState(new BlockPos(coords.add(0, 0, -1))).isAir()) return coords.add(0, 0, -1);
 			};
 
 			// test right+down
 			switch (direction) {
 			default:
 			case NORTH:
-				if (level.getBlockState(coords.add(1, -1, 0).toPos()).isAir()) return vec3.add(1, -1, 0);
+				if (level.getBlockState(new BlockPos(coords.add(1, -1, 0))).isAir()) return coords.add(1, -1, 0);
 			case SOUTH:
-				if (level.getBlockState(coords.add(-1, -1, 0).toPos()).isAir()) return vec3.add(-1, -1, 0);
+				if (level.getBlockState(new BlockPos(coords.add(-1, -1, 0))).isAir()) return coords.add(-1, -1, 0);
 			case EAST :
-				if (level.getBlockState(coords.add(0, -1, 1).toPos()).isAir()) return vec3.add(0, -1, 1);
+				if (level.getBlockState(new BlockPos(coords.add(0, -1, 1))).isAir()) return coords.add(0, -1, 1);
 			case WEST:
-				if (level.getBlockState(coords.add(0, -1, -1).toPos()).isAir()) return vec3.add(0, -1, -1);
+				if (level.getBlockState(new BlockPos(coords.add(0, -1, -1))).isAir()) return coords.add(0, -1, -1);
 			};
 		}
-		return vec3;
+		return spawnPos;
 	}
 }

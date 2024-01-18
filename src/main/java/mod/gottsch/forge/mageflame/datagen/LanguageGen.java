@@ -31,7 +31,7 @@ import net.minecraftforge.common.data.LanguageProvider;
 public class LanguageGen extends LanguageProvider {
 
     public LanguageGen(DataGenerator gen, String locale) {
-        super(gen.getPackOutput(), MageFlame.MOD_ID, locale);
+        super(gen, MageFlame.MOD_ID, locale);
     }
     
     @Override

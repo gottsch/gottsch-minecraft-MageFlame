@@ -31,19 +31,19 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class ItemModelsProvider extends ItemModelProvider {
 
 	public ItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator.getPackOutput(), MageFlame.MOD_ID, existingFileHelper);
+		super(generator, MageFlame.MOD_ID, existingFileHelper);
 	}
 
 	@Override
 	protected void registerModels() {
 		// tabs
-		singleTexture(Registration.MAGE_FLAME_SCROLL.getId().getPath(),
+		singleTexture(Registration.MAGE_FLAME_SCROLL.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/mage_flame_scroll"));
-		singleTexture(Registration.LESSER_REVELATION_SCROLL.getId().getPath(),
+		singleTexture(Registration.LESSER_REVELATION_SCROLL.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lesser_revelation_scroll"));
-		singleTexture(Registration.GREATER_REVELATION_SCROLL.getId().getPath(),
+		singleTexture(Registration.GREATER_REVELATION_SCROLL.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/greater_revelation_scroll"));
-		singleTexture(Registration.WINGED_TORCH_SCROLL.getId().getPath(),
+		singleTexture(Registration.WINGED_TORCH_SCROLL.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/winged_torch_scroll"));
 
 	}

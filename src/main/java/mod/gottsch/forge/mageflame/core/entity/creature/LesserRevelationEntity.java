@@ -49,9 +49,9 @@ public class LesserRevelationEntity extends SummonFlameBaseEntity {
 		double d1 = this.getY() + 0.2;
 		double d2 = this.getZ();
 		// TODO update with custom particles
-		this.level().addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		this.level().addParticle(Registration.REVELATION_PARTICLE.get(), d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		this.level().addParticle(ParticleTypes.SPORE_BLOSSOM_AIR, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level.addParticle(Registration.REVELATION_PARTICLE.get(), d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level.addParticle(ParticleTypes.SPORE_BLOSSOM_AIR, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
 	}
 	

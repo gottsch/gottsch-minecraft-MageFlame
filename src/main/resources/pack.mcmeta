@@ -1,8 +1,6 @@
 {
     "pack": {
-    "description": {
-      "text": "mageflame resources"
-    },
-    "pack_format": 15
+        "description": "examplemod resources",
+        "pack_format": 9
     }
 }

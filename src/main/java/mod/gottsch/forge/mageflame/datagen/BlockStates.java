@@ -31,7 +31,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class BlockStates extends BlockStateProvider {
 
 	public BlockStates(DataGenerator gen, ExistingFileHelper helper) {
-        super(gen.getPackOutput(), MageFlame.MOD_ID, helper);
+        super(gen, MageFlame.MOD_ID, helper);
     }
 	
 	@Override

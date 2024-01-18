@@ -69,8 +69,8 @@ public class WingedTorchEntity extends SummonFlameBaseEntity {
 		double d0 = this.getX();
 		double d1 = this.getY() + 0.6;
 		double d2 = this.getZ();
-		this.level().addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		this.level().addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 	}
 	
 	/**
@@ -78,9 +78,9 @@ public class WingedTorchEntity extends SummonFlameBaseEntity {
 	 */
 	@Override
 	protected boolean testPlacement(BlockPos pos) {
-		BlockState state = this.level().getBlockState(pos);
+		BlockState state = this.level.getBlockState(pos);
 		// check block
-		if (state.isAir() || (state.canBeReplaced()) && state.getFluidState().isEmpty()) {
+		if (state.isAir() || (state.getMaterial().isReplaceable()) && state.getFluidState().isEmpty()) {
 			return true;
 		}
 		return false;

@@ -26,6 +26,8 @@ import mod.gottsch.forge.mageflame.core.MageFlame;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * 
@@ -44,10 +46,10 @@ public class LangUtil {
 	 */
 	public static void appendAdvancedHoverText(String modid, List<Component> tooltip, Consumer<List<Component>> consumer) {
 		if (!Screen.hasShiftDown()) {
-			tooltip.add(Component.literal(NEWLINE));
+			tooltip.add(new TextComponent(NEWLINE));
 			// TODO how do make this call to tooltip generic for any mod because it would require the modid
-			tooltip.add(Component.translatable(tooltip(modid, "hold_shift")).withStyle(ChatFormatting.GRAY));
-			tooltip.add(Component.literal(LangUtil.NEWLINE));
+			tooltip.add(new TranslatableComponent(tooltip(modid, "hold_shift")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(LangUtil.NEWLINE));
 		}
 		else {
 			consumer.accept(tooltip);
