@@ -48,8 +48,8 @@ public class MageFlameEntity extends SummonFlameBaseEntity {
 		double d0 = this.getX();
 		double d1 = this.getY() + 0.2;
 		double d2 = this.getZ();
-		this.level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		this.level.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level().addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level().addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 	}
 	
 }

@@ -18,8 +18,7 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,31 +41,31 @@ public class Registration {
 	 */
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MageFlame.MOD_ID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MageFlame.MOD_ID);
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MageFlame.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MageFlame.MOD_ID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, MageFlame.MOD_ID);
 
 	// Blocks
 	public static final RegistryObject<Block> MAGE_FLAME_BLOCK = Registration.BLOCKS.register(MAGE_FLAME,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 11;
-					}).noDrops()));
+					}).noLootTable()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 13;
-					}).noDrops()));
+					}).noLootTable()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 15;
-					}).noDrops()));
+					}).noLootTable()));
 
 	// items
-	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> LESSER_REVELATION_SCROLL = Registration.ITEMS.register("lesser_revelation_scroll", () -> new LesserRevelationScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> GREATER_REVELATION_SCROLL = Registration.ITEMS.register("greater_revelation_scroll", () -> new GreaterRevelationScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-	public static final RegistryObject<Item> WINGED_TORCH_SCROLL = Registration.ITEMS.register("winged_torch_scroll", () -> new WingedTorchScroll(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+	public static final RegistryObject<Item> MAGE_FLAME_SCROLL = Registration.ITEMS.register("mage_flame_scroll", () -> new MageFlameScroll(new Item.Properties()));
+	public static final RegistryObject<Item> LESSER_REVELATION_SCROLL = Registration.ITEMS.register("lesser_revelation_scroll", () -> new LesserRevelationScroll(new Item.Properties()));
+	public static final RegistryObject<Item> GREATER_REVELATION_SCROLL = Registration.ITEMS.register("greater_revelation_scroll", () -> new GreaterRevelationScroll(new Item.Properties()));
+	public static final RegistryObject<Item> WINGED_TORCH_SCROLL = Registration.ITEMS.register("winged_torch_scroll", () -> new WingedTorchScroll(new Item.Properties()));
 
 	// entities
 	public static final RegistryObject<EntityType<MageFlameEntity>> MAGE_FLAME_ENTITY  = Registration.ENTITIES.register(MAGE_FLAME, () -> EntityType.Builder.of(MageFlameEntity::new, MobCategory.CREATURE)

@@ -29,8 +29,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -69,13 +70,10 @@ public class ClientSetup {
         event.registerEntityRenderer(Registration.WINGED_TORCH_ENTITY.get(), WingedTorchRenderer::new);
 
 	}
-	
+
+	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
-	public static void registerParticleProviders(ParticleFactoryRegisterEvent event) {
-		ParticleEngine particleEngine = Minecraft.getInstance().particleEngine;
-		
-		particleEngine.register(Registration.REVELATION_PARTICLE.get(), 
-				FlameParticle.Provider::new);
-		
+	public static void registerFactories(RegisterParticleProvidersEvent event) {
+		event.registerSpriteSet(Registration.REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
 	}
 }

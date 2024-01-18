@@ -20,22 +20,14 @@ package mod.gottsch.forge.mageflame.core.item;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.config.Config;
-import mod.gottsch.forge.mageflame.core.entity.creature.ISummonFlameEntity;
-import mod.gottsch.forge.mageflame.core.setup.Registration;
 import mod.gottsch.forge.mageflame.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -61,7 +53,7 @@ public abstract class SummonFlameBaseItem extends Item implements ISummonFlameIt
 
 	@Override
 	public Component getName(ItemStack stack) {
-		return ((TranslatableComponent)super.getName(stack)).withStyle(ChatFormatting.AQUA);
+		return ((MutableComponent)super.getName(stack)).withStyle(ChatFormatting.AQUA);
 	}
 	
 	@Override
@@ -81,11 +73,11 @@ public abstract class SummonFlameBaseItem extends Item implements ISummonFlameIt
 	}
 	
 	public void appendLore(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag, String key) {
-		TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip(key));
-		tooltip.add(new TextComponent(" "));
+		MutableComponent lore = Component.translatable(LangUtil.tooltip(key));
+		tooltip.add(Component.literal(" "));
 		for (String s : lore.getString().split("~")) {	
-			tooltip.add(new TranslatableComponent(LangUtil.INDENT2)
-					.append(new TextComponent(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
+			tooltip.add(Component.translatable(LangUtil.INDENT2)
+					.append(Component.literal(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
 		}
 	}
 

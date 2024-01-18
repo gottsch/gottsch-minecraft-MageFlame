@@ -23,6 +23,12 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import org.checkerframework.common.returnsreceiver.qual.This;
 
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -36,7 +42,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -50,10 +55,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -83,7 +84,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	 */
 	protected SummonFlameBaseEntity(EntityType<? extends FlyingMob> entity, Level level, double lifespan) {
 		super(entity, level);
-		this.birthTime = level.getGameTime();
+		this.birthTime = level().getGameTime();
 		this.lifespan = lifespan;
 		this.moveControl = new SummonFlameMoveControl(this);
 	}
@@ -100,11 +101,11 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 	@Override
 	public void doDeathEffects() {
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			double d0 = this.getX();
 			double d1 = this.getY() + 0.2;
 			double d2 = this.getZ();
-			((ServerLevel)level).sendParticles(ParticleTypes.SMOKE, d0, d1, d2, 1, 0D, 0D, 0D, (double)0);
+			((ServerLevel)level()).sendParticles(ParticleTypes.SMOKE, d0, d1, d2, 1, 0D, 0D, 0D, (double)0);
 		}
 	}
 
@@ -127,7 +128,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	 * @param random
 	 * @return
 	 */
-	public static boolean checkSpawnRules(EntityType<? extends FlyingMob> mob, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, Random random) {
+	public static boolean checkSpawnRules(EntityType<? extends FlyingMob> mob, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
 		return false;
 	}
 
@@ -152,9 +153,9 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isClientSide) {
+		if (!this.level().isClientSide) {
 			if (updateLifespan() < 0) {
-				die(DamageSource.GENERIC);
+				die(this.damageSources().generic());
 			}
 		}
 	}
@@ -167,9 +168,9 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	public void aiStep() {
 		super.aiStep();
 
-		if (this.level.isClientSide) {
-			if (this.level.getGameTime() % 10 == 0) {
-				BlockState state = this.level.getBlockState(this.blockPosition());
+		if (this.level().isClientSide) {
+			if (this.level().getGameTime() % 10 == 0) {
+				BlockState state = this.level().getBlockState(this.blockPosition());
 				if (state.getFluidState().isEmpty() || canLiveInFluid()) {
 					doLivingEffects();
 				}
@@ -177,8 +178,8 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		}
 		else {
 			// check for death scenarios ie no owner, if in water
-			if (this.level.getGameTime() % 10 == 0) {
-				BlockState state = this.level.getBlockState(this.blockPosition());
+			if (this.level().getGameTime() % 10 == 0) {
+				BlockState state = this.level().getBlockState(this.blockPosition());
 				if (this.getOwner() == null || (!state.getFluidState().isEmpty() && !canLiveInFluid())) {
 					// kill self
 					die();
@@ -186,7 +187,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 				}
 			}
 			// TODO add 0-20 ticks config value on how often to update this 
-			if (this.level.getGameTime() % Config.SERVER.updateLightTicks.get() == 0) {
+			if (this.level().getGameTime() % Config.SERVER.updateLightTicks.get() == 0) {
 				updateLightBlocks();
 			}
 		}
@@ -206,15 +207,15 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 			}
 			// set last = current as they are in the same place
 			setLastLightCoords(getCurrentLightCoords());
-			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
+			LevelUtil.setBlockForced(this.level(), getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
 		} else {
 			if (!blockPosition().equals(getCurrentLightCoords().toPos())) {
 				//				MageFlame.LOGGER.debug("current pos is not the same -> {}", getCurrentLightCoords().toShortString());
 
 				// test location if fluids
-				BlockState currentState = level.getBlockState(blockPosition());
+				BlockState currentState = level().getBlockState(blockPosition());
 				if (!currentState.getFluidState().isEmpty() && !canLiveInFluid()) {
-					LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
+					LevelUtil.setBlockForced(this.level(), getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 				}
 				else {
 					if (!updateLightCoords()) {
@@ -223,10 +224,10 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 					}
 
 					// update block with flame
-					LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
+					LevelUtil.setBlockForced(this.level(), getCurrentLightCoords().toPos(), getFlameBlock().defaultBlockState(), 3);
 
 					// delete old
-					LevelUtil.setBlockForced(this.level, getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
+					LevelUtil.setBlockForced(this.level(), getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 				}
 			}
 		}
@@ -278,7 +279,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	}
 
 	protected boolean testPlacement(BlockPos pos) {
-		BlockState state = this.level.getBlockState(pos);
+		BlockState state = this.level().getBlockState(pos);
 		// check block
 		if (state.isAir()) {
 			return true;
@@ -288,7 +289,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 
 	@Override
 	public void die() {
-		die(DamageSource.GENERIC);
+		die(this.damageSources().generic());
 	}
 
 	@Override
@@ -302,15 +303,15 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		this.dead = true;
 
 		// remove light blocks
-		if (getCurrentLightCoords() != null && level.getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
-			LevelUtil.setBlockForced(this.level, getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
+		if (getCurrentLightCoords() != null && level().getBlockState(getCurrentLightCoords().toPos()).getBlock() == getFlameBlock()) {
+			LevelUtil.setBlockForced(this.level(), getCurrentLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 		}
-		if (getLastLightCoords() != null && level.getBlockState(getLastLightCoords().toPos()).getBlock() == getFlameBlock()) {
-			LevelUtil.setBlockForced(this.level, getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
+		if (getLastLightCoords() != null && level().getBlockState(getLastLightCoords().toPos()).getBlock() == getFlameBlock()) {
+			LevelUtil.setBlockForced(this.level(), getLastLightCoords().toPos(), Blocks.AIR.defaultBlockState(), 3);
 		}			
 		remove(RemovalReason.KILLED);
 		super.die(damageSource);
-		//		this.level.broadcastEntityEvent(this, (byte)3);
+		//		this.level().broadcastEntityEvent(this, (byte)3);
 	}
 
 	/**
@@ -376,7 +377,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 	public LivingEntity getOwner() {
 		try {
 			UUID uuid = this.getOwnerUUID();
-			return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+			return uuid == null ? null : this.level().getPlayerByUUID(uuid);
 		} catch (IllegalArgumentException illegalargumentexception) {
 			return null;
 		}
@@ -435,7 +436,6 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		 * 
 		 * @param flameBall
 		 * @param startDistance
-		 * @param stopDistance
 		 */
 		public SummonFlameFollowOwnerGoal(SummonFlameBaseEntity flameBall, float startDistance) {
 			this.flameBall = flameBall;
@@ -484,7 +484,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 		@Override
 		public void start() {
 			Vec3 initialPos = this.flameBall.selectSummonOffsetPos(this.owner);
-			Vec3 wantedPos = this.flameBall.selectSpawnPos(this.flameBall.level, new Vec3(initialPos.x, initialPos.y, initialPos.z), this.flameBall.getDirection());
+			Vec3 wantedPos = this.flameBall.selectSpawnPos(this.flameBall.level(), new Vec3(initialPos.x, initialPos.y, initialPos.z), this.flameBall.getDirection());
 			this.flameBall.getMoveControl().setWantedPosition(wantedPos.x, wantedPos.y, wantedPos.z, 1.0D);
 		}
 
@@ -499,7 +499,7 @@ public abstract class SummonFlameBaseEntity extends FlyingMob implements ISummon
 				if (this.flameBall.distanceToSqr(this.owner) >= 36.0D) {
 					// teleport to owner
 					Vec3 offsetPos = this.flameBall.selectSummonOffsetPos(this.owner);
-					Vec3 wantedPos = this.flameBall.selectSpawnPos(this.flameBall.level, new Vec3(offsetPos.x, offsetPos.y, offsetPos.z), this.flameBall.getDirection());
+					Vec3 wantedPos = this.flameBall.selectSpawnPos(this.flameBall.level(), new Vec3(offsetPos.x, offsetPos.y, offsetPos.z), this.flameBall.getDirection());
 					this.flameBall.getMoveControl().setWantedPosition(wantedPos.x, wantedPos.y, wantedPos.z, 1.0D);
 					this.flameBall.moveTo(wantedPos.x, wantedPos.y, wantedPos.z, this.flameBall.getYRot(), this.flameBall.getXRot());
 				}
