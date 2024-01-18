@@ -1,9 +1,8 @@
 {
   "pack": {
     "description": {
-      "text": "mage flame resources"
+      "text": "treasure2 resources"
     },
-    "forge:server_data_pack_format": 12,
-    "pack_format": 13
+    "pack_format": 15
   }
 }

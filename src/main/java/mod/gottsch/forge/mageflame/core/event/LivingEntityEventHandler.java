@@ -37,22 +37,22 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @Mod.EventBusSubscriber(modid = MageFlame.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
 public class LivingEntityEventHandler {
 //	@SubscribeEvent
-	public static void onEntityUpdate(LivingTickEvent event) {
-		if (event.getEntity().level.isClientSide) {
-			return;
-		}	
-	}
+//	public static void onEntityUpdate(LivingTickEvent event) {
+//		if (event.getEntity().level().isClientSide) {
+//			return;
+//		}
+//	}
 	
 	// TODO RESEARCH this could be better implemented in Entity.Load()
 	@SubscribeEvent
 	public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
-		if (event.getEntity().level.isClientSide) {
+		if (event.getEntity().level().isClientSide) {
 			return;
 		}
 		if (event.getEntity() instanceof ISummonFlameEntity) {
 			// MageFlame.LOGGER.debug("entity is joing the level -> {}", event.getEntity().getClass().getSimpleName());
 			SummonFlameBaseEntity entity = (SummonFlameBaseEntity)event.getEntity();
-			ServerLevel serverLevel = (ServerLevel)event.getEntity().level;
+			ServerLevel serverLevel = (ServerLevel)event.getEntity().level();
 			
 			// register the entity
 			if (entity.getOwnerUUID() != null) {

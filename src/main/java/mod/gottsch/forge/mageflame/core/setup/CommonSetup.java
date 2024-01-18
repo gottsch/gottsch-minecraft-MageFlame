@@ -28,7 +28,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -94,8 +94,8 @@ public class CommonSetup {
 	}
 	
 	@SubscribeEvent
-	public static void registemItemsToTab(BuildContents event) {
-		if (event.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+	public static void registemItemsToTab(BuildCreativeModeTabContentsEvent event) {
+		if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
 			event.accept(Registration.MAGE_FLAME_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.accept(Registration.LESSER_REVELATION_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.accept(Registration.GREATER_REVELATION_SCROLL.get(), TabVisibility.PARENT_AND_SEARCH_TABS);

@@ -27,6 +27,7 @@ import mod.gottsch.forge.mageflame.core.client.renderer.entity.MageFlameRenderer
 import mod.gottsch.forge.mageflame.core.client.renderer.entity.WingedTorchRenderer;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,8 +70,9 @@ public class ClientSetup {
 	}
 
 	@SubscribeEvent
-	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-		event.register(Registration.REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
+	@OnlyIn(Dist.CLIENT)
+	public static void registerFactories(RegisterParticleProvidersEvent event) {
+		event.registerSpriteSet(Registration.REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
 	}
 		
 }

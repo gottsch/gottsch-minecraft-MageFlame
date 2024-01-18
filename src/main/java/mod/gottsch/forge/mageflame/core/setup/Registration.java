@@ -16,7 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,17 +44,17 @@ public class Registration {
 
 	// Blocks
 	public static final RegistryObject<Block> MAGE_FLAME_BLOCK = Registration.BLOCKS.register(MAGE_FLAME,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 11;
 					}).noLootTable()));
 	public static final RegistryObject<Block> LESSER_REVELATION_BLOCK = Registration.BLOCKS.register(LESSER_REVELATION,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 13;
 					}).noLootTable()));
 	public static final RegistryObject<Block> GREATER_REVELATION_BLOCK = Registration.BLOCKS.register(GREATER_REVELATION,	
-			() -> new SummonFlameBlock(Block.Properties.of(Material.FIRE)
+			() -> new SummonFlameBlock(Block.Properties.of().mapColor(MapColor.FIRE)
 					.noCollission().lightLevel((state) -> {
 						return 15;
 					}).noLootTable()));
