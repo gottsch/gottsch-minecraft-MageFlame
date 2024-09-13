@@ -56,7 +56,7 @@ public class Config extends AbstractConfig {
 		public ForgeConfigSpec.IntValue lesserRevelationLifespan;
 		public ForgeConfigSpec.IntValue greaterRevelationLifespan;
 		public ForgeConfigSpec.IntValue updateLightTicks;
-		
+
 		public ServerConfig(ForgeConfigSpec.Builder builder) {
 
 			builder.comment(CATEGORY_DIV, "Flame / Torch Entity Properties", CATEGORY_DIV)
@@ -78,7 +78,7 @@ public class Config extends AbstractConfig {
 			updateLightTicks = builder
 					.comment(" The number of ticks before the next light update.")
 					.defineInRange("updateLightTicks", 2, 1, 20);
-			
+
 			builder.pop();
 		}
 	}

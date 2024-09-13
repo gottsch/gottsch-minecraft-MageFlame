@@ -17,6 +17,11 @@
  */
 package mod.gottsch.forge.mageflame.core;
 
+import com.electronwill.nightconfig.core.CommentedConfig;
+import mod.gottsch.forge.mageflame.core.integration.Integrations;
+import mod.gottsch.forge.treasure2.core.config.StructureConfiguration;
+import net.minecraftforge.fml.config.IConfigSpec;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +34,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.Optional;
 
 /**
  * 
@@ -56,5 +63,20 @@ public class MageFlame {
 		// Register the setup method for modloading
 		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		eventBus.addListener(CommonSetup::common);
+		eventBus.addListener(this::config);
+	}
+
+	private void config(final ModConfigEvent event) {
+		if (event.getConfig().getModId().equals(MOD_ID)) {
+			if (event.getConfig().getType() == ModConfig.Type.SERVER) {
+				IConfigSpec<?> spec = event.getConfig().getSpec();
+				// get the toml config data
+				CommentedConfig commentedConfig = event.getConfig().getConfigData();
+
+				 if (spec == Config.SERVER_CONFIG) {
+					 Integrations.registerTreasure2Integration();
+				}
+			}
+		}
 	}
 }

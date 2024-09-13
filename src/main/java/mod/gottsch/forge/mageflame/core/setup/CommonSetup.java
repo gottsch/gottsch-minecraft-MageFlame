@@ -24,6 +24,7 @@ import mod.gottsch.forge.mageflame.core.entity.creature.GreaterRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.LesserRevelationEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import mod.gottsch.forge.mageflame.core.entity.creature.WingedTorchEntity;
+import mod.gottsch.forge.mageflame.core.integration.Integrations;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -50,6 +51,9 @@ public class CommonSetup {
 		// add mod specific logging
 		Config.instance.addRollingFileAppender(MageFlame.MOD_ID);
 //		MageFlameNetworking.register();
+
+		// treasure2 integration (needs to be registered BEFORE LevelEvent.Load)
+		Integrations.registerTreasure2Integration();
 	}
 	
 	/**
