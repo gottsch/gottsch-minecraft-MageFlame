@@ -20,7 +20,6 @@
 package mod.gottsch.forge.mageflame.core.integration;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.config.Config;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import net.minecraftforge.fml.ModList;
 

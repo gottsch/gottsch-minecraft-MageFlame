@@ -1,31 +1,33 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " e ",
-    "ftf",
-    "spb"
-  ],
+  "category": "misc",
   "key": {
+    "b": {
+      "item": "minecraft:blaze_powder"
+    },
     "e": {
       "item": "minecraft:spider_eye"
     },
     "f": {
       "item": "minecraft:feather"
     },
-    "t": {
-      "item": "minecraft:torch"
+    "p": {
+      "item": "minecraft:paper"
     },
     "s": {
       "item": "minecraft:flint_and_steel"
     },
-    "p": {
-      "item": "minecraft:paper"
-    },
-    "b": {
-      "item": "minecraft:blaze_powder"
+    "t": {
+      "item": "minecraft:torch"
     }
   },
+  "pattern": [
+    " e ",
+    "ftf",
+    "spb"
+  ],
   "result": {
     "item": "mageflame:winged_torch_scroll"
-  }
+  },
+  "show_notification": true
 }

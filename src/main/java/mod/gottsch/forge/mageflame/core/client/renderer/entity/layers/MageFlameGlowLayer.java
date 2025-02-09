@@ -19,6 +19,7 @@ package mod.gottsch.forge.mageflame.core.client.renderer.entity.layers;
 
 import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
 import mod.gottsch.forge.mageflame.core.client.model.entity.WingedTorchModel;
+import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -34,7 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  *
  */
 @OnlyIn(Dist.CLIENT)
-public class MageFlameGlowLayer<T extends Entity, M extends FlameBallModel<T>> extends EyesLayer<T, M> {
+public class MageFlameGlowLayer<T extends MageFlameEntity, M extends FlameBallModel<T>> extends EyesLayer<T, M> {
 	private static final RenderType FLAME = RenderType.eyes(new ResourceLocation("mageflame","textures/entity/mage_flame.png"));
 
 	public MageFlameGlowLayer(RenderLayerParent<T, M> layer) {
