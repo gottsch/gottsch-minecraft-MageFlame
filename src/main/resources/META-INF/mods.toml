@@ -57,13 +57,27 @@ versionRange="${minecraft_version_range}"
     modId="gottschcore"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[2.1.0,]"
+    versionRange="${gottschcore_version_range}"
+    ordering="BEFORE"
+    side="BOTH"
+[[dependencies.mageflame]]
+    modId="sodiumdynamiclights"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[1.0.9,)"
+    ordering="BEFORE"
+    side="BOTH"
+[[dependencies.mageflame]]
+    modId="embeddium"
+    mandatory=true
+    # This version range declares a minimum of the current minecraft version up to but not including the next major version
+    versionRange="[0.3.31+mc1.20.1,)"
     ordering="BEFORE"
     side="BOTH"
 [[dependencies.mageflame]]
     modId="treasure2"
     mandatory=false
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[3.6.2,)"
+    versionRange="${treasure2_version_range}"
     ordering="BEFORE"
     side="BOTH"

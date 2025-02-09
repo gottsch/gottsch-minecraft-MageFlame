@@ -19,6 +19,7 @@ package mod.gottsch.forge.mageflame.datagen;
 
 import java.util.function.Consumer;
 
+import mod.gottsch.forge.mageflame.core.item.ModItems;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.PackOutput;
@@ -42,31 +43,38 @@ public class Recipes extends RecipeProvider {
 
 		@Override
 		protected void buildRecipes(Consumer<FinishedRecipe> recipe) {
-			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.MAGE_FLAME_SCROLL.get())
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GLOWGLOB_BALL.get(), 4)
+				.requires(Items.GUNPOWDER)
+				.requires(Items.MUD)
+				.requires(Items.PAPER)
+				.unlockedBy("has", InventoryChangeTrigger.TriggerInstance.hasItems(Items.GUNPOWDER, Items.MUD, Items.PAPER))
+				.save(recipe);
+
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MAGE_FLAME_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.PAPER)
 			.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
-					Items.TORCH))
+					Items.TORCH, Items.PAPER))
 			.save(recipe);
 			
-			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.LESSER_REVELATION_SCROLL.get())
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.LESSER_REVELATION_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.FLINT_AND_STEEL)
 			.requires(Items.PAPER)
 			.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
-					Items.TORCH))
+					Items.TORCH, Items.PAPER, Items.FLINT_AND_STEEL))
 			.save(recipe);
 			
-			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.GREATER_REVELATION_SCROLL.get())
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GREATER_REVELATION_SCROLL.get())
 			.requires(Items.TORCH)
 			.requires(Items.FLINT_AND_STEEL)
 			.requires(Items.GLOWSTONE_DUST)
 			.requires(Items.PAPER)
 			.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
-					Items.TORCH))
+					Items.TORCH, Items.FLINT_AND_STEEL, Items.GLOWSTONE_DUST, Items.PAPER))
 	        .save(recipe);
 			
-	        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.WINGED_TORCH_SCROLL.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.WINGED_TORCH_SCROLL.get())
 	        .pattern(" e ")
 	        .pattern("ftf")
 	        .pattern("spb")
@@ -77,7 +85,32 @@ public class Recipes extends RecipeProvider {
 	        .define('p', Items.PAPER)
 	        .define('b', Items.BLAZE_POWDER)
 			.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
-					Items.TORCH))
-	        .save(recipe);	   
+					Items.TORCH, Items.SPIDER_EYE, Items.FEATHER, Items.FLINT_AND_STEEL, Items.PAPER, Items.BLAZE_POWDER))
+	        .save(recipe);
+
+			ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EMBER_HOUND_SCROLL.get())
+					.pattern(" d ")
+					.pattern("ltl")
+					.pattern("spb")
+					.define('d', Items.DIAMOND)
+					.define('l', Items.LEATHER)
+					.define('t', Items.TORCH)
+					.define('s', Items.FLINT_AND_STEEL)
+					.define('p', Items.PAPER)
+					.define('b', Items.BLAZE_POWDER)
+					.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
+							Items.TORCH, Items.DIAMOND, Items.LEATHER, Items.FLINT_AND_STEEL, Items.PAPER, Items.BLAZE_POWDER))
+					.save(recipe);
+
+			// bubble flame
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.BUBBLE_FLAME_SCROLL.get(), 1)
+					.requires(Items.TORCH)
+					.requires(Items.PAPER)
+					.requires(Items.FLINT_AND_STEEL)
+					.requires(Items.TURTLE_EGG)
+					.requires(Items.GLOWSTONE_DUST)
+					.unlockedBy("has_torch", InventoryChangeTrigger.TriggerInstance.hasItems(
+							Items.TORCH, Items.PAPER, Items.TURTLE_EGG, Items.FLINT_AND_STEEL, Items.GLOWSTONE_DUST))
+					.save(recipe);
 		}
 }
