@@ -1,28 +1,28 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "mageflame:mage_flame_scroll"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mageflame:mage_flame_scroll"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_torch": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:torch"
             ]
+          },
+          {
+            "items": [
+              "minecraft:paper"
+            ]
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "mageflame:mage_flame_scroll"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -30,5 +30,11 @@
       "has_torch",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mageflame:mage_flame_scroll"
+    ]
+  },
+  "sends_telemetry_event": false
 }

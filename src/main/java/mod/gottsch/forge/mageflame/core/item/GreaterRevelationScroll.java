@@ -20,6 +20,7 @@ package mod.gottsch.forge.mageflame.core.item;
 import java.util.List;
 
 import mod.gottsch.forge.mageflame.core.config.Config;
+import mod.gottsch.forge.mageflame.core.setup.DynamicLights;
 import mod.gottsch.forge.mageflame.core.setup.Registration;
 import mod.gottsch.forge.mageflame.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
@@ -35,7 +36,7 @@ import net.minecraft.world.level.Level;
  * @author Mark Gottschling Jan 23, 2023
  *
  */
-public class GreaterRevelationScroll extends SummonFlameBaseItem {
+public class GreaterRevelationScroll extends SummonFlyingScrollItem {
 
 	public GreaterRevelationScroll(Properties properties) {
 		super(properties);
@@ -49,7 +50,7 @@ public class GreaterRevelationScroll extends SummonFlameBaseItem {
 	public void appendBaseText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(LangUtil.tooltip("greater_revelation.desc")).withStyle(ChatFormatting.YELLOW));
 		tooltip.add(Component.literal(LangUtil.NEWLINE));
-		tooltip.add(Component.translatable(LangUtil.tooltip("light_level"), Registration.GREATER_REVELATION_BLOCK.get().getLightEmission(Registration.GREATER_REVELATION_BLOCK.get().defaultBlockState(), level, null)));					
+		tooltip.add(Component.translatable(LangUtil.tooltip("light_level"), DynamicLights.GREATER_REVELATION_LUMINANCE));
 		tooltip.add(Component.translatable(LangUtil.tooltip("lifespan"), ticksToTime(Config.SERVER.greaterRevelationLifespan.get())));
 
 	}

@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
+import mod.gottsch.forge.mageflame.core.entity.creature.SummonedFlyingEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -40,7 +41,7 @@ import net.minecraft.world.entity.Entity;
  *
  * @param <T>
  */
-public class FlameBallModel<T extends Entity> extends EntityModel<T> {
+public class FlameBallModel<T extends SummonedFlyingEntity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(MageFlame.MOD_ID, "flame_ball"), "main");
 	private final ModelPart main;

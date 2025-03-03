@@ -1,28 +1,38 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "mageflame:greater_revelation_scroll"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mageflame:greater_revelation_scroll"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_torch": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:torch"
             ]
+          },
+          {
+            "items": [
+              "minecraft:flint_and_steel"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:glowstone_dust"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:paper"
+            ]
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "mageflame:greater_revelation_scroll"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -30,5 +40,11 @@
       "has_torch",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mageflame:greater_revelation_scroll"
+    ]
+  },
+  "sends_telemetry_event": false
 }

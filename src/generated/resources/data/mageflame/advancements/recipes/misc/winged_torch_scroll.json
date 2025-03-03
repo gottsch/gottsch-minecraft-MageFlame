@@ -1,28 +1,48 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "mageflame:winged_torch_scroll"
-    ]
-  },
   "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mageflame:winged_torch_scroll"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
     "has_torch": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
               "minecraft:torch"
             ]
+          },
+          {
+            "items": [
+              "minecraft:spider_eye"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:feather"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:flint_and_steel"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:paper"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:blaze_powder"
+            ]
           }
         ]
-      }
-    },
-    "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
-      "conditions": {
-        "recipe": "mageflame:winged_torch_scroll"
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
@@ -30,5 +50,11 @@
       "has_torch",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mageflame:winged_torch_scroll"
+    ]
+  },
+  "sends_telemetry_event": false
 }

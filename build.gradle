@@ -96,14 +96,30 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenLocal()
     maven {
-        url "${project.projectDir}/../maven"
+        url "file:///${project.projectDir}/../maven"
     }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+    }
+    maven {
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
      minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
-    compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.2-f43.2.0-v2.0.0")
+    //compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.2-f43.2.0-v2.0.0")
+    compileOnly fg.deobf("curse.maven:gottschcore-272450:4629077")
+    implementation fg.deobf("curse.maven:treasure2-289760:6008348")
+    implementation fg.deobf("curse.maven:dynamiclights-reforged-551736:4285414")
+    implementation fg.deobf("curse.maven:embeddium-908741:5539178")
+    implementation fg.deobf("curse.maven:jade-324717:4914105")
+//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
+//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
   }
 
 // Example for how to get properties into the manifest for reading at runtime.

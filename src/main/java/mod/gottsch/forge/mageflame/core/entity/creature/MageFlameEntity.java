@@ -17,30 +17,21 @@
  */
 package mod.gottsch.forge.mageflame.core.entity.creature;
 
-import org.jetbrains.annotations.NotNull;
-
 import mod.gottsch.forge.mageflame.core.config.Config;
-import mod.gottsch.forge.mageflame.core.setup.Registration;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 
 /**
  *
  * @author Mark Gottschling on Apr 6, 2022
  *
  */
-public class MageFlameEntity extends SummonFlameBaseEntity {
+public class MageFlameEntity extends SummonedFlyingEntity {
 
 	public MageFlameEntity(EntityType<? extends FlyingMob> entityType, Level level) {
 		super(entityType, level, Config.SERVER.mageFlameLifespan.get());
-	}
-
-	@Override
-	public @NotNull Block getFlameBlock() {
-		 return Registration.MAGE_FLAME_BLOCK.get();
 	}
 
 	@Override
@@ -48,8 +39,8 @@ public class MageFlameEntity extends SummonFlameBaseEntity {
 		double d0 = this.getX();
 		double d1 = this.getY() + 0.2;
 		double d2 = this.getZ();
-		this.level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		this.level.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level().addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		this.level().addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 	}
 	
 }

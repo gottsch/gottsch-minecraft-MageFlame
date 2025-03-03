@@ -21,8 +21,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.mageflame.core.MageFlame;
 import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
-import mod.gottsch.forge.mageflame.core.client.renderer.entity.layer.LesserRevelationGlowLayer;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layers.LesserRevelationGlowLayer;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.layers.MageFlameGlowLayer;
 import mod.gottsch.forge.mageflame.core.entity.creature.LesserRevelationEntity;
+import mod.gottsch.forge.mageflame.core.entity.creature.MageFlameEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

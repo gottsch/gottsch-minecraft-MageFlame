@@ -17,21 +17,22 @@
  */
 package mod.gottsch.forge.mageflame.core.setup;
 
+import com.google.common.eventbus.Subscribe;
+import dev.lambdaurora.lambdynlights.api.DynamicLightHandler;
 import mod.gottsch.forge.mageflame.core.MageFlame;
-import mod.gottsch.forge.mageflame.core.client.model.entity.FlameBallModel;
-import mod.gottsch.forge.mageflame.core.client.model.entity.LargeFlameBallModel;
-import mod.gottsch.forge.mageflame.core.client.model.entity.WingedTorchModel;
-import mod.gottsch.forge.mageflame.core.client.renderer.entity.GreaterRevelationRenderer;
-import mod.gottsch.forge.mageflame.core.client.renderer.entity.LesserRevelationRenderer;
-import mod.gottsch.forge.mageflame.core.client.renderer.entity.MageFlameRenderer;
-import mod.gottsch.forge.mageflame.core.client.renderer.entity.WingedTorchRenderer;
+import mod.gottsch.forge.mageflame.core.client.model.entity.*;
+import mod.gottsch.forge.mageflame.core.client.renderer.entity.*;
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import static dev.lambdaurora.lambdynlights.api.DynamicLightHandlers.registerDynamicLightHandler;
 
 /**
  * Client only event bus subscriber.
@@ -48,11 +49,14 @@ public class ClientSetup {
 	 * register layers
 	 * @param event
 	 */
-	@SubscribeEvent()
+	@SubscribeEvent
 	public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(FlameBallModel.LAYER_LOCATION, FlameBallModel::createBodyLayer);
 		event.registerLayerDefinition(LargeFlameBallModel.LAYER_LOCATION, LargeFlameBallModel::createBodyLayer);
 		event.registerLayerDefinition(WingedTorchModel.LAYER_LOCATION, WingedTorchModel::createBodyLayer);
+		event.registerLayerDefinition(BubbleFlameModel.LAYER_LOCATION, BubbleFlameModel::createBodyLayer);
+		event.registerLayerDefinition(EmberHoundModel.LAYER_LOCATION, EmberHoundModel::createBodyLayer);
+		event.registerLayerDefinition(GlowglobModel.LAYER_LOCATION, GlowglobModel::createBodyLayer);
 	}
 
 	/**
@@ -61,16 +65,22 @@ public class ClientSetup {
 	 */
 	@SubscribeEvent
     public static void onRegisterRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(Registration.MAGE_FLAME_ENTITY.get(), MageFlameRenderer::new);
-        event.registerEntityRenderer(Registration.LESSER_REVELATION_ENTITY.get(), LesserRevelationRenderer::new);
-        event.registerEntityRenderer(Registration.GREATER_REVELATION_ENTITY.get(), GreaterRevelationRenderer::new);
-        event.registerEntityRenderer(Registration.WINGED_TORCH_ENTITY.get(), WingedTorchRenderer::new);
-
+		event.registerEntityRenderer(Registration.MAGE_FLAME_ENTITY.get(), MageFlameRenderer::new);
+		event.registerEntityRenderer(Registration.LESSER_REVELATION_ENTITY.get(), LesserRevelationRenderer::new);
+		event.registerEntityRenderer(Registration.GREATER_REVELATION_ENTITY.get(), GreaterRevelationRenderer::new);
+		event.registerEntityRenderer(Registration.WINGED_TORCH_ENTITY.get(), WingedTorchRenderer::new);
+		event.registerEntityRenderer(Registration.BUBBLE_FLAME_ENTITY.get(), BubbleFlameRenderer::new);
+		event.registerEntityRenderer(Registration.EMBER_HOUND_ENTITY.get(), EmberHoundRenderer::new);
+		event.registerEntityRenderer(Registration.GLOWGLOB_ENTITY.get(), GlowglobRenderer::new);
+		event.registerEntityRenderer(Registration.GLOWGLOB_BALL_ENTITY.get(), ThrownItemRenderer::new);
 	}
 
 	@SubscribeEvent
-	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-		event.register(Registration.REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
+	@OnlyIn(Dist.CLIENT)
+	public static void registerFactories(RegisterParticleProvidersEvent event) {
+		event.registerSpriteSet(Registration.REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
+		event.registerSpriteSet(Registration.GREATER_REVELATION_PARTICLE.get(), FlameParticle.Provider::new);
+		event.registerSpriteSet(Registration.BUBBLE_FLAME_PARTICLE.get(), FlameParticle.Provider::new);
 	}
 		
 }
